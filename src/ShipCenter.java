@@ -191,7 +191,6 @@ public class ShipCenter extends GameFrame implements KeyListener {
 	@Override
 	protected void simpleUpdate() {
 		fred.update(keys);
-		keys.clear();
 	}
 
 	@Override
@@ -217,8 +216,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-        if (!isPaused && !gameOver) {
-			System.out.println(e.getKeyCode());
+        if (!isPaused && !gameOver && !keys.contains(e.getKeyCode())) {
 			keys.add(e.getKeyCode());
         }
 
@@ -226,7 +224,9 @@ public class ShipCenter extends GameFrame implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-
+		if (!isPaused && !gameOver) {
+			keys.remove((Object) e.getKeyCode());
+		}
 	}
 } // end of WormChase class
 
