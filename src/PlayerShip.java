@@ -53,23 +53,24 @@ public class PlayerShip {
             updatePos(updateQueue.get(x));
             System.out.println(x);
         }
-        rotate(rotationVelocity);
 
-        if(rotationVelocity > maxRotate)
+        rotate((int)pos.getRotationVelocity());
+
+        if(pos.getRotationVelocity() > maxRotate)
         {
-            rotationVelocity = maxRotate;
+            pos.setRotationVelocity(maxRotate);
         }
-        else if (rotationVelocity < -1 * maxRotate)
+        else if (pos.getRotationVelocity() < -1 * maxRotate)
         {
-            rotationVelocity =  -1 * maxRotate;
+            pos.setRotationVelocity(-1 * maxRotate);
         }
-        else if(rotationVelocity > 0)
+        else if(pos.getRotationVelocity() > 0)
         {
-            rotationVelocity--;
+            pos.setRotationVelocity(pos.getRotationVelocity() - 1);
         }
-        else if(rotationVelocity < 0)
+        else if(pos.getRotationVelocity() < 0)
         {
-            rotationVelocity++;
+            pos.setRotationVelocity(pos.getRotationVelocity() + 1);
         }
 
     }
@@ -97,11 +98,11 @@ public class PlayerShip {
         }
         if(x == ks.getRbLeft())
         {
-            rotationVelocity += 4;
+            pos.setRotationVelocity(pos.getRotationVelocity() + 4);
         }
         if(x == ks.getRbRight())
         {
-            rotationVelocity -=4;
+            pos.setRotationVelocity(pos.getRotationVelocity() - 4);
         }
 
 
