@@ -54,6 +54,8 @@ public class Position {
 
     public void setRotationVelocity(double rotationVelocity) {
         this.rotationVelocity = rotationVelocity;
+        orientation += rotationVelocity + 360;
+        orientation %= 360;
 
     }
 

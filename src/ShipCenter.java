@@ -169,6 +169,9 @@ public class ShipCenter extends GameFrame implements KeyListener {
 		g.drawOval(quitArea.x, quitArea.y, quitArea.width, quitArea.height);
 		g.drawString("Quit", quitArea.x + 15, quitArea.y + 10);
 
+		g.setColor(Color.cyan);
+		g.drawString("G", 124, 154);
+
 		if (isOverQuitButton)
 			g.setColor(Color.black);
 	} // drawButtons()

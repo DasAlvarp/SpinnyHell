@@ -4,6 +4,7 @@
 public class KeysList {
     int boostUp = 87;//W
     int rbLeft = 81;//Q
+    int rbRight = 69;//E
 
     public int getBoostUp()
     {
@@ -13,6 +14,11 @@ public class KeysList {
     public int getRbLeft()
     {
         return rbLeft;
+    }
+
+    public int getRbRight()
+    {
+        return rbRight;
     }
 
 
