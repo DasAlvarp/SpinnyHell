@@ -199,7 +199,8 @@ public class ShipCenter extends GameFrame implements KeyListener {
 
 	}
 
-	public static void main(String args[]) {
+	public static void main(String args[])
+    {
 		int fps = DEFAULT_FPS;
 		if (args.length != 0)
 			fps = Integer.parseInt(args[0]);
@@ -216,8 +217,10 @@ public class ShipCenter extends GameFrame implements KeyListener {
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
-        if (!isPaused && !gameOver) {
+	public void keyPressed(KeyEvent e)
+    {
+        if (!isPaused && !gameOver)
+        {
 			System.out.println(e.getKeyCode());
 			keys.add(e.getKeyCode());
         }

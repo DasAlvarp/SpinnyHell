@@ -13,8 +13,9 @@ public class PlayerShip {
     Position pos;//position data of ship
     KeysList ks = new KeysList();
     int dimsX = 16, dimsY = 48;
-    int rotationVelocity;
+
     Random randy = new Random();
+
 
     int maxRotate = 40;
 
@@ -51,7 +52,6 @@ public class PlayerShip {
         for(int x = 0; x < updateQueue.size(); x++)
         {
             updatePos(updateQueue.get(x));
-            System.out.println(x);
         }
 
         rotate((int)pos.getRotationVelocity());
@@ -66,11 +66,11 @@ public class PlayerShip {
         }
         else if(pos.getRotationVelocity() > 0)
         {
-            pos.setRotationVelocity(pos.getRotationVelocity() - 1);
+            pos.setRotationVelocity(pos.getRotationVelocity() - randy.nextInt(2));
         }
         else if(pos.getRotationVelocity() < 0)
         {
-            pos.setRotationVelocity(pos.getRotationVelocity() + 1);
+            pos.setRotationVelocity(pos.getRotationVelocity() + randy.nextInt(2));
         }
 
     }
