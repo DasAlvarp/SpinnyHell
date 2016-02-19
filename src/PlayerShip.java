@@ -22,6 +22,8 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     BufferedImage shipImg;
     BufferedImage drawIm;
 
+    Shield shield;
+
 
     Random randy = new Random();
 
@@ -49,10 +51,12 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         shipImg = imgLoader.getImage("ship");
         drawIm = shipImg;
 
+        shield = new Shield(pos);
     }
 
     public void draw(Graphics g)//draws player. Adding position data soon.
     {
+        shield.draw(g);
         drawImage(g, drawIm, pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
     }
 
@@ -62,6 +66,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     {
         for (Integer anUpdateQueue : updateQueue) {//for the whole list. In case multiple keys are down.
             updatePos(anUpdateQueue);
+            shield.updatePos(anUpdateQueue);
         }
 
         //updating rotational velocity
@@ -123,6 +128,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         rotate((int)pos.getRotationVelocity());
 
         wrapAround(pos);
+        shield.update(pos);
     }
 
     public void wrapAround(Position p)

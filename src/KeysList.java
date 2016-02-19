@@ -5,6 +5,7 @@ public class KeysList {
     int boostUp = 87;//W
     int rbLeft = 65;//A
     int rbRight = 68;//D
+    int shieldRight = 76;//L
 
     public int getBoostUp()
     {
