@@ -1,3 +1,5 @@
+import javafx.geometry.Pos;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
@@ -120,7 +122,31 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         pos.relativeTranslate(sideVelocity);
         rotate((int)pos.getRotationVelocity());
 
+        wrapAround(pos);
     }
+
+    public void wrapAround(Position p)
+    {
+        if(p.getX() < 0)
+        {
+            p.setX(frameX - 1);
+        }
+        else if(p.getX() > frameX)
+        {
+            p.setX(1);
+        }
+
+        if(p.getY() < 0)
+        {
+            p.setY(frameY - 1);
+        }
+        else if(p.getY() > frameY)
+        {
+            p.setY(1);
+        }
+
+    }
+
 
     public void updatePos(int x)//update positioning.
     {

@@ -4,7 +4,6 @@
 public class Position {
     int x,y;
     double xVelocity, yVelocity;
-
     public double getOrientation() {
         return orientation;
     }
@@ -13,6 +12,8 @@ public class Position {
     double rotationVelocity;
 
     //Constructors
+
+
     public Position(int x, int y, double xVel, double yVel, double or, double rVel)
     {
         this.x = x;
