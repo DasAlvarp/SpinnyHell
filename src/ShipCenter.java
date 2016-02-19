@@ -65,6 +65,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
 	private PlayerShip fred; // the worm
 	private Obstacles obs; // the obstacles
 	private int boxesUsed = 0;
+    private boolean[] inputs;
 
 	private int score = 0;
 	private Font font;
@@ -90,6 +91,11 @@ public class ShipCenter extends GameFrame implements KeyListener {
 	@Override
 	protected void simpleInitialize() {
 		// create game components
+        inputs = new boolean[256];
+        for(int x  = 0; x < inputs.length; x++)
+        {
+            inputs[x] = false;
+        }
 		obs = new Obstacles(14, pWidth, pHeight);
 		fred = new PlayerShip(pWidth, pHeight);
 		addKeyListener(this);
@@ -193,8 +199,8 @@ public class ShipCenter extends GameFrame implements KeyListener {
 
 	@Override
 	protected void simpleUpdate() {
-		fred.update(keys);
-		obs.update(keys);
+		fred.update(inputs);
+		obs.update(inputs);
 		keys.clear();
 	}
 
@@ -226,14 +232,16 @@ public class ShipCenter extends GameFrame implements KeyListener {
         if (!isPaused && !gameOver)
         {
 			System.out.println(e.getKeyCode());
-			keys.add(e.getKeyCode());
+			inputs[e.getKeyCode()] = true;
         }
 
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-
+        if(!isPaused && !gameOver) {
+            inputs[e.getKeyCode()] = false;
+        }
 	}
 
 	@Override

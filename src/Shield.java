@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 /**
  * Created by alvarpq on 2/19/2016.
@@ -11,27 +12,63 @@ public class Shield {
     ImageSFXs imgSfx;
     BufferedImage shieldImg;
     BufferedImage drawIm;
+    int maxRotate = 5;
+    Random randy;
 
+    KeysList keys = new KeysList();
     public Shield(Position shipPos)
     {
         imgLoader = new ImagesLoader("Images/imsInfo.txt");
         imgSfx = new ImageSFXs();
         shieldImg = imgLoader.getImage("shield");
         drawIm = shieldImg;
-        pos = shipPos;
+        pos = new Position(shipPos.getX(), shipPos.getY());
+        randy = new Random();
     }
+
 
     public void updatePos(int keyDown)
     {
-        if(keyDown == 123)
+        if(keys.getShieldRight() == keyDown)
         {
-
+            pos.setRotationVelocity(pos.getRotationVelocity() + 2);
+        }
+        else if(keys.getShieldLeft() == keyDown)
+        {
+            pos.setRotationVelocity(pos.getRotationVelocity() - 2);
         }
     }
 
     public void update(Position shipPos)
     {
+        if(pos.getRotationVelocity() > maxRotate)
+        {
+            pos.setRotationVelocity(maxRotate);
+        }
+        else if (pos.getRotationVelocity() < -1 * maxRotate)
+        {
+            pos.setRotationVelocity(-1 * maxRotate);
+        }
+        else if(pos.getRotationVelocity() > 0)
+        {
+            pos.setRotationVelocity(pos.getRotationVelocity() - randy.nextInt(2));
+        }
+        else if(pos.getRotationVelocity() < 0)
+        {
+            pos.setRotationVelocity(pos.getRotationVelocity() + randy.nextInt(2));
+        }
 
+        pos.setX(shipPos.getX());
+        pos.setY(shipPos.getY());
+
+        rotate((int)pos.getRotationVelocity());
+
+    }
+
+    public void rotate(int rotation)//rotates a certain amount of degrees
+    {
+        pos.setRotationVelocity(rotation);
+        drawIm = imgSfx.getRotatedImage(shieldImg, (int)pos.getOrientation());
     }
 
     public void draw(Graphics g)//draws player. Adding position data soon.

@@ -6,6 +6,14 @@ public class KeysList {
     int rbLeft = 65;//A
     int rbRight = 68;//D
     int shieldRight = 76;//L
+    int shieldLeft = 74; //J
+    public int getShieldRight() {
+        return shieldRight;
+    }
+    public int getShieldLeft(){
+        return shieldLeft;
+    }
+
 
     public int getBoostUp()
     {

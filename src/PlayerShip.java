@@ -11,8 +11,8 @@ import java.util.Random;
  * Created by alvarpq on 2/17/2016.
  */
 public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
-    private final int MAX_SIDE_VELOCITY = 20;
-    private final int MAX_FORWARD_VELOCITY = 30;
+    private final int MAX_SIDE_VELOCITY = 10;
+    private final int MAX_FORWARD_VELOCITY = 20;
 
     int frameX, frameY;//screen dimensions
     Position pos;//position data of ship
@@ -30,7 +30,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     double forwardVelocity = 0;
     double sideVelocity = 0;
 
-    int maxRotate = 40;
+    int maxRotate = 5;
 
     int[] xPts;
     int[] yPts;
@@ -62,11 +62,13 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
 
     //updates. Has a queue of key events.
-    public void update(ArrayList<Integer> updateQueue)
+    public void update(boolean[] updateQueue)
     {
-        for (Integer anUpdateQueue : updateQueue) {//for the whole list. In case multiple keys are down.
-            updatePos(anUpdateQueue);
-            shield.updatePos(anUpdateQueue);
+        for (int x = 0; x < updateQueue.length; x++) {//for the whole list. In case multiple keys are down.
+            if(updateQueue[x]) {
+                updatePos(x);
+                shield.updatePos(x);
+            }
         }
 
         //updating rotational velocity
@@ -162,13 +164,13 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         }
         else if(x == ks.getRbLeft())
         {
-            relativeTranslate(6);
-            pos.setRotationVelocity(pos.getRotationVelocity() - 4);
+            relativeTranslate(5);
+            pos.setRotationVelocity(pos.getRotationVelocity() - 1);
         }
         else if(x == ks.getRbRight())
         {
-            relativeTranslate(-6);
-            pos.setRotationVelocity(pos.getRotationVelocity() + 4);
+            relativeTranslate(-5);
+            pos.setRotationVelocity(pos.getRotationVelocity() + 1);
         }
     }
 
@@ -186,8 +188,6 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     {
         pos.setRotationVelocity(rotation);
         drawIm = imgSfx.getRotatedImage(shipImg, (int)pos.getOrientation());
-
-
     }
 
     private void drawImage(Graphics g2d, BufferedImage im, int x, int y) {

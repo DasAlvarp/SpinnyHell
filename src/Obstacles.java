@@ -20,7 +20,7 @@ public class Obstacles {
         frameY = height;
     }
 
-    public synchronized void update(ArrayList<Integer> updateQueue)//updates obstacles. If there aren't enough, there's a chance to make more
+    public synchronized void update(boolean[] inputs)//updates obstacles. If there aren't enough, there's a chance to make more
     {
 
         for (Obstacle ship : ships)
