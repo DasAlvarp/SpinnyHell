@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,6 +14,8 @@ public class PlayerShip {
     Position pos;//position data of ship
     KeysList ks = new KeysList();
     int dimsX = 16, dimsY = 48;
+
+    BufferedImage shipPic;
 
     Random randy = new Random();
 
