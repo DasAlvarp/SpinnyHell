@@ -135,9 +135,9 @@ public class ShipCenter extends GameFrame implements KeyListener {
 	                                df.format(averageUPS), 20, 25);  // was (10,55)
 		
 		// report time used and boxes used at bottom left
-		gScr.drawString("MouseX : " + getMousePosition().getX() + " secs", 10,
-				pHeight - 15);
-		gScr.drawString("MouseY : " + getMousePosition().getY(), 260, pHeight - 15);
+//		gScr.drawString("MouseX : " + getMousePosition().getX() + " secs", 10,
+//				pHeight - 15);
+//		gScr.drawString("MouseY : " + getMousePosition().getY(), 260, pHeight - 15);
 
 		// draw the pause and quit 'buttons'
 		drawButtons(gScr);

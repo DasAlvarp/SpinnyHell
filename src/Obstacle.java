@@ -14,7 +14,7 @@ public class Obstacle {
     public void draw(Graphics g)
     {
         g.setColor(Color.cyan);
-        g.fillRect(pos.getX(), pos.getY(), 3, 3);
+        g.fillOval(pos.getX(), pos.getY(), 15, 15);
     }
     public void update() {
         pos.update();

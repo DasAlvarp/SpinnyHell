@@ -3,8 +3,8 @@
  */
 public class KeysList {
     int boostUp = 87;//W
-    int rbLeft = 81;//Q
-    int rbRight = 69;//E
+    int rbLeft = 65;//A
+    int rbRight = 68;//D
 
     public int getBoostUp()
     {
