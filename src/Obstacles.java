@@ -23,9 +23,8 @@ public class Obstacles {
     public void update(ArrayList<Integer> updateQueue)//updates obstacles. If there aren't enough, there's a chance to make more
     {
         int size = ships.size();
-        for(int x = 0; x < size; x++)
-        {
-            ships.get(x).update();
+        for (Obstacle ship : ships) {
+            ship.update();
         }
         if(size < maxNum * randy.nextInt(2))
         {
@@ -62,9 +61,8 @@ public class Obstacles {
 
     public void draw(Graphics g)
     {
-        for(int x = 0; x < ships.size(); x++)
-        {
-            ships.get(x).draw(g);
+        for (Obstacle ship : ships) {
+            ship.draw(g);
         }
     }
 

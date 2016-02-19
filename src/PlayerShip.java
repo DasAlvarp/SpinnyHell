@@ -49,9 +49,8 @@ public class PlayerShip {
     //updates. Has a queue of key events.
     public void update(ArrayList<Integer> updateQueue)
     {
-        for(int x = 0; x < updateQueue.size(); x++)
-        {
-            updatePos(updateQueue.get(x));
+        for (Integer anUpdateQueue : updateQueue) {
+            updatePos(anUpdateQueue);
         }
 
         rotate((int)pos.getRotationVelocity());
