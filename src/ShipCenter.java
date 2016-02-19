@@ -46,14 +46,18 @@
  ----
  */
 
+import net.java.games.input.Controller;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class ShipCenter extends GameFrame implements KeyListener {
+//go here for help with controllers
+//http://www.java-gaming.org/index.php?PHPSESSID=pvdddk0s18t5qg4qhl316e1880&topic=16866.0
 
+public class ShipCenter extends GameFrame implements KeyListener {
 
 	private static final long serialVersionUID = -2450477630768116721L;
 

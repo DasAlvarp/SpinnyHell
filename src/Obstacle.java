@@ -1,3 +1,5 @@
+import java.awt.*;
+
 /**
  * Created by alvarpq on 2/17/2016.
  */
@@ -9,6 +11,11 @@ public class Obstacle {
     }
 
 
+    public void draw(Graphics g)
+    {
+        g.fillRect(pos.getX(), pos.getY(), 3, 3);
+    }
     public void update() {
+        pos.update();
     }
 }

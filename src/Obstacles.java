@@ -63,10 +63,9 @@ public class Obstacles {
 
     public void draw(Graphics g)
     {
-        int size = ships.size();
-        for(int x = 0; x < size; x++)
+        for(int x = 0; x < ships.size(); x++)
         {
-
+            ships.get(x).draw(g);
         }
     }
 

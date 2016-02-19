@@ -65,4 +65,8 @@ public class Position {
         return "x: " + x + "\ny: " + y;
     }
 
+    public void update() {
+        x += xVelocity;
+        y += yVelocity;
+    }
 }
