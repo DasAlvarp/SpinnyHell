@@ -38,9 +38,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         frameX = width;
         frameY = height;
         pos = new Position(width / 2, height / 2);//start player in middle of screen
-        xPts = new int[4];
-        yPts = new int[4];
-        setXYpoints();
+
         imgLoader = new ImagesLoader("Images/imsInfo.txt");
         imgSfx = new ImageSFXs();
         shipImg = imgLoader.getImage("ship");
@@ -50,12 +48,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
     public void draw(Graphics g)//draws player. Adding position data soon.
     {
-        g.setColor(Color.GRAY);
-
-        g.drawPolygon(craft);
-        g.setColor(Color.cyan);
-        g.drawRect(findCenter()[0], findCenter()[1], 1,1);
-        drawImage((Graphics2D)g, drawIm, pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
+        drawImage(g, drawIm, pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
     }
 
 
@@ -66,7 +59,6 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             updatePos(anUpdateQueue);
         }
 
-        rotate((int)pos.getRotationVelocity());
 
         if(pos.getRotationVelocity() > maxRotate)
         {
@@ -76,7 +68,6 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         {
             pos.setRotationVelocity(-1 * maxRotate);
         }
-        /*
         else if(pos.getRotationVelocity() > 0)
         {
             pos.setRotationVelocity(pos.getRotationVelocity() - randy.nextInt(2));
@@ -84,38 +75,24 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         else if(pos.getRotationVelocity() < 0)
         {
             pos.setRotationVelocity(pos.getRotationVelocity() + randy.nextInt(2));
-        }*/
-
-    }
-
-
-    public int[] findCenter()
-    {
-        int xSum = 0;
-        int ySum = 0;
-        for(int x = 0; x < 4; x++)
-        {
-            xSum += craft.xpoints[x];
-            ySum += craft.ypoints[x];
         }
-        return new int[]{xSum / 4, ySum / 4 };
+        rotate((int)pos.getRotationVelocity());
+
     }
 
     public void updatePos(int x)//update positioning.
     {
-
         if(x == ks.getBoostUp())
         {
-            pos.setY(pos.getY() - 1);
-            craft.translate(0, -1);
+            pos.goForward(5);
         }
-        if(x == ks.getRbLeft())
+        else if(x == ks.getRbLeft())
         {
-            pos.setRotationVelocity(pos.getRotationVelocity() + 2);
+            pos.setRotationVelocity(pos.getRotationVelocity() - 4);
         }
-        if(x == ks.getRbRight())
+        else if(x == ks.getRbRight())
         {
-            pos.setRotationVelocity(pos.getRotationVelocity() - 2);
+            pos.setRotationVelocity(pos.getRotationVelocity() + 4);
         }
 
 
@@ -126,45 +103,13 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
     public void rotate(int rotation)//rotates a certain amount of degrees
     {
-        int[] center = findCenter();
-        AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(rotation), center[0], center[1]);
-
         pos.setRotationVelocity(rotation);
-        Polygon p = new Polygon();
-
-        PathIterator i = craft.getPathIterator(at);
-        int it = 0;
-        while(!i.isDone() && it < 4)
-        {
-            double[] xy = new double[2];
-            i.currentSegment(xy);
-            p.addPoint((int) xy[0], (int) xy[1]);
-            i.next();
-            it++;//should only happen 4 times. I enforce this with bad programming.
-        }
-
-        craft = p;
-
         drawIm = imgSfx.getRotatedImage(shipImg, (int)pos.getOrientation());
 
 
     }
 
-    public void setXYpoints()
-    {
-        xPts[0] = pos.getX() + dimsX / 2;
-        xPts[1] = pos.getX() + dimsX / 2;
-        xPts[2] = pos.getX() - dimsX / 2;
-        xPts[3] = pos.getX() - dimsX / 2;
-
-        yPts[0] = pos.getY() + dimsY / 2;
-        yPts[1] = pos.getY() - dimsY / 2;
-        yPts[2] = pos.getY() - dimsY / 2;
-        yPts[3] = pos.getY() + dimsY / 2;
-        craft = new Polygon(xPts, yPts, 4);
-    }
-
-    private void drawImage(Graphics2D g2d, BufferedImage im, int x, int y) {
+    private void drawImage(Graphics g2d, BufferedImage im, int x, int y) {
 		/* Draw the image, or a yellow box with ?? in it if there is no image. */
         if (im == null) {
             // System.out.println("Null image supplied");
@@ -184,6 +129,6 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
     @Override
     public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
-        return false;
+        return true;
     }
 }
