@@ -1,0 +1,2 @@
+o ship.png
+o s2.png

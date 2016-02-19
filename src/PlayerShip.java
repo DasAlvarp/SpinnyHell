@@ -13,9 +13,10 @@ public class PlayerShip {
     int frameX, frameY;//screen dimensions
     Position pos;//position data of ship
     KeysList ks = new KeysList();
-    int dimsX = 16, dimsY = 48;
+    int dimsX = 17, dimsY = 41;
 
-    BufferedImage shipPic;
+    BufferedImage shipImg;
+
 
     Random randy = new Random();
 
@@ -27,6 +28,8 @@ public class PlayerShip {
 
     Polygon craft;
 
+    ImagesLoader imgLoader;
+    ImageSFXs imgSfx;
 
     public PlayerShip(int width, int height)
     {
@@ -36,6 +39,9 @@ public class PlayerShip {
         xPts = new int[4];
         yPts = new int[4];
         setXYpoints();
+        imgLoader = new ImagesLoader("Images/imsInfo.txt");
+        imgSfx = new ImageSFXs();
+        shipImg = imgLoader.getImage("ship");
 
     }
 
@@ -46,6 +52,7 @@ public class PlayerShip {
         g.drawPolygon(craft);
         g.setColor(Color.cyan);
         g.drawRect(findCenter()[0], findCenter()[1], 1,1);
+        g.drawImage(shipImg, pos.getX() - dimsX / 2, pos.getY() - dimsY / 2, null);
     }
 
 
@@ -133,6 +140,10 @@ public class PlayerShip {
         }
 
         craft = p;
+
+        shipImg = imgSfx.getRotatedImage(shipImg, rotation);
+
+
     }
 
     public void setXYpoints()

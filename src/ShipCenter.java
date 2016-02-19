@@ -46,7 +46,6 @@
  ----
  */
 
-import net.java.games.input.Controller;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

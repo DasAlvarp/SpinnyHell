@@ -58,6 +58,9 @@ public abstract class GameFrame extends JFrame implements Runnable {
 	// used at game termination
 	protected boolean gameOver = false;
 
+	public final ImagesLoader imgLoader;
+	public final ImageSFXs imgSfx;
+
 	// used for full-screen exclusive mode
 	private GraphicsDevice gd;
 	private Graphics gScr;
@@ -92,6 +95,8 @@ public abstract class GameFrame extends JFrame implements Runnable {
 			fpsStore[i] = 0.0;
 			upsStore[i] = 0.0;
 		}
+		imgLoader = new ImagesLoader("Images/imsInfo.txt");
+		imgSfx = new ImageSFXs();
 
 		gameStart();
 
