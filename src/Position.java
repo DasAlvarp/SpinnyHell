@@ -59,6 +59,11 @@ public class Position {
 
     }
 
+    public void goForward(double speed)
+    {
+        x+=Math.cos(Math.toRadians(orientation)) * speed;
+        y += Math.sin(Math.toRadians(orientation)) * speed;
+    }
 
     public String toString()
     {
