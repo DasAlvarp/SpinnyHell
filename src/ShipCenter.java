@@ -234,5 +234,10 @@ public class ShipCenter extends GameFrame implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 
 	}
+
+	@Override
+	public void sequenceEnded(String imageName) {
+
+	}
 } // end of WormChase class
 

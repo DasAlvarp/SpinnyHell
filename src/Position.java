@@ -4,6 +4,11 @@
 public class Position {
     int x,y;
     double xVelocity, yVelocity;
+
+    public double getOrientation() {
+        return orientation;
+    }
+
     double orientation;
     double rotationVelocity;
 

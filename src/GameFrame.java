@@ -8,7 +8,7 @@ import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.text.DecimalFormat;
 
-public abstract class GameFrame extends JFrame implements Runnable {
+public abstract class GameFrame extends JFrame implements Runnable, ImagesPlayerWatcher {
 	private static final long serialVersionUID = 1863596360846514344L;
 	private static final int NUM_BUFFERS = 2; // used for page flipping
 
