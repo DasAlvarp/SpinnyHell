@@ -70,6 +70,12 @@ public class Position {
         y -= Math.cos(Math.toRadians(orientation)) * speed;
     }
 
+    public void relativeTranslate(double dirSpeed)
+    {
+        x -= Math.cos(Math.toRadians(orientation)) * dirSpeed;
+        y -= Math.sin(Math.toRadians(orientation)) * dirSpeed;
+    }
+
     public String toString()
     {
         return "x: " + x + "\ny: " + y;

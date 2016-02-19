@@ -1,6 +1,4 @@
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
@@ -11,6 +9,9 @@ import java.util.Random;
  * Created by alvarpq on 2/17/2016.
  */
 public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
+    private final int MAX_SIDE_VELOCITY = 20;
+    private final int MAX_FORWARD_VELOCITY = 30;
+
     int frameX, frameY;//screen dimensions
     Position pos;//position data of ship
     KeysList ks = new KeysList();
@@ -22,6 +23,8 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
     Random randy = new Random();
 
+    double forwardVelocity = 0;
+    double sideVelocity = 0;
 
     int maxRotate = 40;
 
@@ -55,11 +58,11 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     //updates. Has a queue of key events.
     public void update(ArrayList<Integer> updateQueue)
     {
-        for (Integer anUpdateQueue : updateQueue) {
+        for (Integer anUpdateQueue : updateQueue) {//for the whole list. In case multiple keys are down.
             updatePos(anUpdateQueue);
         }
 
-
+        //updating rotational velocity
         if(pos.getRotationVelocity() > maxRotate)
         {
             pos.setRotationVelocity(maxRotate);
@@ -76,6 +79,45 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         {
             pos.setRotationVelocity(pos.getRotationVelocity() + randy.nextInt(2));
         }
+
+        //updating side velocity
+        if(sideVelocity > MAX_SIDE_VELOCITY)
+        {
+            sideVelocity = MAX_SIDE_VELOCITY;
+        }
+        else if(sideVelocity < -1 * MAX_SIDE_VELOCITY)
+        {
+            sideVelocity = -1 * MAX_SIDE_VELOCITY;
+        }
+        else if(sideVelocity > 0)
+        {
+            sideVelocity -= randy.nextInt(2);
+        }
+        else if(sideVelocity < 0)
+        {
+            sideVelocity += randy.nextInt(2);
+        }
+
+        //updating forward velocity
+        if(forwardVelocity > MAX_FORWARD_VELOCITY)
+        {
+            forwardVelocity = MAX_FORWARD_VELOCITY;
+        }
+        else if(forwardVelocity < -1 * MAX_FORWARD_VELOCITY)
+        {
+            forwardVelocity = -1 * MAX_FORWARD_VELOCITY;
+        }
+        else if(forwardVelocity > 0)
+        {
+            forwardVelocity -= randy.nextInt(2);
+        }
+        else if(forwardVelocity < 0)
+        {
+            forwardVelocity += randy.nextInt(2);
+        }
+
+        pos.goForward(forwardVelocity);
+        pos.relativeTranslate(sideVelocity);
         rotate((int)pos.getRotationVelocity());
 
     }
@@ -84,21 +126,28 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     {
         if(x == ks.getBoostUp())
         {
-            pos.goForward(5);
+            forwardTranslate(7);
         }
         else if(x == ks.getRbLeft())
         {
+            relativeTranslate(6);
             pos.setRotationVelocity(pos.getRotationVelocity() - 4);
         }
         else if(x == ks.getRbRight())
         {
+            relativeTranslate(-6);
             pos.setRotationVelocity(pos.getRotationVelocity() + 4);
         }
+    }
 
+    public void forwardTranslate(double distance)
+    {
+        forwardVelocity += distance;
+    }
 
-
-
-
+    public void relativeTranslate(double delta)
+    {
+        sideVelocity += delta;
     }
 
     public void rotate(int rotation)//rotates a certain amount of degrees
