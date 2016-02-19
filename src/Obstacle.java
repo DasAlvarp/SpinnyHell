@@ -13,6 +13,7 @@ public class Obstacle {
 
     public void draw(Graphics g)
     {
+        g.setColor(Color.cyan);
         g.fillRect(pos.getX(), pos.getY(), 3, 3);
     }
     public void update() {

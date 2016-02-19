@@ -20,42 +20,66 @@ public class Obstacles {
         frameY = height;
     }
 
-    public void update(ArrayList<Integer> updateQueue)//updates obstacles. If there aren't enough, there's a chance to make more
+    public synchronized void update(ArrayList<Integer> updateQueue)//updates obstacles. If there aren't enough, there's a chance to make more
     {
-        int size = ships.size();
-        for (Obstacle ship : ships) {
+
+        for (Obstacle ship : ships)
+        {
             ship.update();
         }
+
+        int size = ships.size();
+
+        ArrayList<Obstacle> shipsNew = new ArrayList<>();
+        for (Obstacle ship : ships) {
+            if (!(ship.pos.getX() <= 0 || ship.pos.getY() <= 0 || ship.pos.getX() >= frameX || ship.pos.getY() >= frameY)) {
+                shipsNew.add(ship);
+            }
+        }
+
+        ships = shipsNew;
+
         if(size < maxNum * randy.nextInt(2))
         {
             ships.add(generateObstacle(frameX, frameY));
         }
-
-
-
     }
 
-    public Obstacle generateObstacle(int frameX, int frameY)
+    public synchronized Obstacle generateObstacle(int frameX, int frameY)
     {
         int x, y;
         double velY, velX;
         Position pos;
-        if(randy.nextInt(2) == 1)
-        {
-            x = randy.nextInt(frameX);
-            y = randy.nextInt(2);
-            velX = 2 * (randy.nextDouble() - .5);
-            velY = randy.nextDouble() * (y * 2 - 1);
-            pos = new Position(x, y * frameY, velX, velY);
+
+        switch (randy.nextInt(4)) {
+            case 0:
+                x = randy.nextInt(frameX);
+                y = 1;
+                velX = 8 * (randy.nextDouble() - 0.5);
+                velY = 4 * randy.nextDouble();
+                break;
+            case 1:
+                x = randy.nextInt(frameX);
+                y = frameY - 1;
+                velX = 8 * (randy.nextDouble() - 0.5);
+                velY = -4 * randy.nextDouble();
+                break;
+            case 2:
+                x = 1;
+                y = randy.nextInt(frameY);
+                velX = 4 * randy.nextDouble();
+                velY = 8 * (randy.nextDouble() - 0.5);
+                break;
+            default:
+                x = frameX - 1;
+                y = randy.nextInt(frameY);
+                velX = -4 * randy.nextDouble();
+                velY = 8 * (randy.nextDouble() - 0.5);
+                break;
         }
-        else
-        {
-            x = randy.nextInt(2);
-            y = randy.nextInt(frameY);
-            velY = 2 * (randy.nextDouble() - .5);
-            velX = randy.nextDouble() * (x * 2 - 1);
-            pos = new Position(x * frameX, y, velX, velY);
-        }
+
+        pos = new Position(x, y, velX, velY);
+
         return new Obstacle(pos);
     }
 
