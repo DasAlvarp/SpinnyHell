@@ -1,8 +1,6 @@
-import javafx.geometry.Pos;
-
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorConvertOp;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 import java.util.Random;
@@ -21,10 +19,13 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     int dimsX = 17, dimsY = 41;
     int points = 0;
 
+    BufferedImage literallyTheWholeScreen;
+
     BufferedImage shipImg;
     BufferedImage drawIm;
 
     Shield shield;
+    Color theGray = new Color(127, 127, 127);
 
 
     Random randy = new Random();
@@ -55,6 +56,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     {
         shield.draw(g);
         drawImage(g, drawIm, pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
+        literallyTheWholeScreen = new BufferedImage(frameX, frameY, BufferedImage.TYPE_4BYTE_ABGR);
     }
 
 
@@ -187,14 +189,14 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         drawIm = imgSfx.getRotatedImage(shipImg, (int)pos.getOrientation());
     }
 
-    public void checkHits(Obstacles obs)
+    public synchronized void checkHits(Obstacles obs)
     {
         ArrayList<Obstacle> newObs = new ArrayList<>();
         Rectangle collideRect = new Rectangle(drawIm.getMinX(), drawIm.getMinY(), drawIm.getWidth(), drawIm.getHeight());
-        Color theGray = new Color(127, 127, 127);
 
         for(int x = 0; x < obs.getObstacles().size(); x++)
         {
+            System.out.println("MD is literally aids");
             if(shield.intersects(obs.getObstacles().get(x)))
             {
                // points++;
@@ -206,6 +208,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             }
             else
             {
+                System.out.println("no really, I mean it");
                 newObs.add(obs.getObstacles().get(x));
             }
         }
@@ -213,22 +216,20 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         obs.setObstacles(newObs);
     }
 
-    private boolean intersects(Obstacle obs, Rectangle collider, Color theGray)
+    private boolean intersects(Obstacle obs, Rectangle collider, Color theGray)//checks for intersection, first over image, then over color
     {
         if(collider.intersects(obs.getRect())) {
-            try {
-                Robot robo = new Robot();
-                for (int x = obs.getX(); x < obs.getWidth() + obs.getX(); x++) {
-                    for (int y = obs.getY(); y < obs.getHeight() + obs.getY(); y++) {
-                        if (robo.getPixelColor(x, y) == theGray) {
-                            return true;
-                        }
+            return true;
+            /*for (int x = obs.getX(); x < obs.getWidth() + obs.getX(); x++) {
+                for (int y = obs.getY(); y < obs.getHeight() + obs.getY(); y++) {
+                    if (new Color(literallyTheWholeScreen.getColorModel().getRGB(new Point(x, y))) == theGray) {
+                        System.out.println("yay");
+                        return true;
                     }
                 }
-            } catch (AWTException e) {
-                return false;
-            }
+            }*/
         }
+        System.out.println("nuttin");
         return false;
     }
 

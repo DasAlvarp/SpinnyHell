@@ -50,6 +50,8 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -96,7 +98,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
         {
             inputs[x] = false;
         }
-		obs = new Obstacles(14, pWidth, pHeight);
+		obs = new Obstacles(1, pWidth, pHeight);
 		fred = new PlayerShip(pWidth, pHeight);
 		addKeyListener(this);
 
@@ -141,12 +143,20 @@ public class ShipCenter extends GameFrame implements KeyListener {
 	                                df.format(averageUPS), 20, 25);  // was (10,55)
 		
 		// report time used and boxes used at bottom left
-//		gScr.drawString("MouseX : " + getMousePosition().getX() + " secs", 10,
-//				pHeight - 15);
 //		gScr.drawString("MouseY : " + getMousePosition().getY(), 260, pHeight - 15);
 
 		// draw the pause and quit 'buttons'
-		drawButtons(gScr);
+/*
+		try {
+			Robot robo = new Robot();
+            BufferedImage efficency = robo.createScreenCapture(new Rectangle(0,0,getWidth(), getHeight()));
+            Color newCol = new Color(efficency.getRGB((int)getMousePosition().getX(), (int)getMousePosition().getY()));
+			gScr.drawString("R : " + newCol.getRed() + " G : " + newCol.getGreen() + " B : " + newCol.getBlue(), 10, pHeight - 15);
+
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
+*/
 
 		gScr.setColor(Color.black);
 
@@ -177,9 +187,6 @@ public class ShipCenter extends GameFrame implements KeyListener {
 
 		g.drawOval(quitArea.x, quitArea.y, quitArea.width, quitArea.height);
 		g.drawString("Quit", quitArea.x + 15, quitArea.y + 10);
-
-		g.setColor(Color.cyan);
-		g.drawString("G", 124, 154);
 
 		if (isOverQuitButton)
 			g.setColor(Color.black);

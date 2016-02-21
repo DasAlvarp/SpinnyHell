@@ -45,12 +45,12 @@ public class Obstacles {
         }
     }
 
-    public ArrayList<Obstacle> getObstacles()
+    public synchronized ArrayList<Obstacle> getObstacles()
     {
         return ships;
     }
 
-    public void setObstacles(ArrayList<Obstacle> nObs)
+    public synchronized void setObstacles(ArrayList<Obstacle> nObs)
     {
         ships = nObs;
     }
