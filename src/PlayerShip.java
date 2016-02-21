@@ -2,6 +2,7 @@ import javafx.geometry.Pos;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 import java.util.Random;
@@ -11,13 +12,14 @@ import java.util.Random;
  * Created by alvarpq on 2/17/2016.
  */
 public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
-    private final int MAX_SIDE_VELOCITY = 10;
-    private final int MAX_FORWARD_VELOCITY = 20;
+    private final int MAX_SIDE_VELOCITY = 6;
+    private final int MAX_FORWARD_VELOCITY = 15;
 
     int frameX, frameY;//screen dimensions
     Position pos;//position data of ship
     KeysList ks = new KeysList();
     int dimsX = 17, dimsY = 41;
+    int points = 0;
 
     BufferedImage shipImg;
     BufferedImage drawIm;
@@ -30,12 +32,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     double forwardVelocity = 0;
     double sideVelocity = 0;
 
-    int maxRotate = 5;
-
-    int[] xPts;
-    int[] yPts;
-
-    Polygon craft;
+    int maxRotate = 3;
 
     ImagesLoader imgLoader;
     ImageSFXs imgSfx;
@@ -188,6 +185,51 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     {
         pos.setRotationVelocity(rotation);
         drawIm = imgSfx.getRotatedImage(shipImg, (int)pos.getOrientation());
+    }
+
+    public void checkHits(Obstacles obs)
+    {
+        ArrayList<Obstacle> newObs = new ArrayList<>();
+        Rectangle collideRect = new Rectangle(drawIm.getMinX(), drawIm.getMinY(), drawIm.getWidth(), drawIm.getHeight());
+        Color theGray = new Color(127, 127, 127);
+
+        for(int x = 0; x < obs.getObstacles().size(); x++)
+        {
+            if(shield.intersects(obs.getObstacles().get(x)))
+            {
+               // points++;
+            }
+            else if(intersects(obs.getObstacles().get(x), collideRect, theGray))
+            {
+                points--;
+                System.out.print("\n" + points);
+            }
+            else
+            {
+                newObs.add(obs.getObstacles().get(x));
+            }
+        }
+
+        obs.setObstacles(newObs);
+    }
+
+    private boolean intersects(Obstacle obs, Rectangle collider, Color theGray)
+    {
+        if(collider.intersects(obs.getRect())) {
+            try {
+                Robot robo = new Robot();
+                for (int x = obs.getX(); x < obs.getWidth() + obs.getX(); x++) {
+                    for (int y = obs.getY(); y < obs.getHeight() + obs.getY(); y++) {
+                        if (robo.getPixelColor(x, y) == theGray) {
+                            return true;
+                        }
+                    }
+                }
+            } catch (AWTException e) {
+                return false;
+            }
+        }
+        return false;
     }
 
     private void drawImage(Graphics g2d, BufferedImage im, int x, int y) {

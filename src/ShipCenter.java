@@ -202,6 +202,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
 		fred.update(inputs);
 		obs.update(inputs);
 		keys.clear();
+		fred.checkHits(obs);
 	}
 
 	@Override
@@ -231,7 +232,6 @@ public class ShipCenter extends GameFrame implements KeyListener {
     {
         if (!isPaused && !gameOver)
         {
-			System.out.println(e.getKeyCode());
 			inputs[e.getKeyCode()] = true;
         }
 

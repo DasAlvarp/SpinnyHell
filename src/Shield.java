@@ -39,7 +39,7 @@ public class Shield {
         }
     }
 
-    public void update(Position shipPos)
+    public void update(Position shipPos)//updates sheld's position and rotational details
     {
         if(pos.getRotationVelocity() > maxRotate)
         {
@@ -74,6 +74,11 @@ public class Shield {
     public void draw(Graphics g)//draws player. Adding position data soon.
     {
         drawImage(g, drawIm, pos.getX() - drawIm.getWidth() / 3, pos.getY() - drawIm.getHeight() / 2);
+    }
+
+    public boolean intersects(Obstacle obs)
+    {
+        return false;
     }
 
     private void drawImage(Graphics g2d, BufferedImage im, int x, int y) {

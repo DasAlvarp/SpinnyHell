@@ -45,6 +45,16 @@ public class Obstacles {
         }
     }
 
+    public ArrayList<Obstacle> getObstacles()
+    {
+        return ships;
+    }
+
+    public void setObstacles(ArrayList<Obstacle> nObs)
+    {
+        ships = nObs;
+    }
+
     public synchronized Obstacle generateObstacle(int frameX, int frameY)
     {
         int x, y;
@@ -89,5 +99,7 @@ public class Obstacles {
             ship.draw(g);
         }
     }
+
+
 
 }

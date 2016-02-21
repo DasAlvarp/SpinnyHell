@@ -6,17 +6,47 @@ import java.awt.*;
 public class Obstacle {
     Position pos;//position data of obstacle
 
+    int height = 15;
+    int width = 15;
+    Rectangle rect;
     public Obstacle(Position pos) {
         this.pos = pos;
+        rect = new Rectangle(pos.getX(), pos.getY(), width, height);
     }
 
 
     public void draw(Graphics g)
     {
-        g.setColor(Color.cyan);
-        g.fillOval(pos.getX(), pos.getY(), 15, 15);
+        g.setColor(Color.red);
+        g.fillRect(pos.getX(), pos.getY(), width, height);
+    }
+
+    public int getWidth()
+    {
+        return width;
+    }
+    public int getHeight()
+    {
+        return height;
+    }
+
+    public int getX()
+    {
+        return pos.getX();
+    }
+
+    public int getY()
+    {
+        return pos.getY();
     }
     public void update() {
         pos.update();
+        rect = new Rectangle(pos.getX(), pos.getY(), width, height);
+
+    }
+
+    public Rectangle getRect()
+    {
+        return rect;
     }
 }
