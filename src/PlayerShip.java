@@ -236,8 +236,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             }
             else if(intersects(obs.getObstacles().get(x), collideRect, theGray))
             {
-                //points--;
-                newObs.add(obs.getObstacles().get(x));
+                points--;
 
             }
             else
