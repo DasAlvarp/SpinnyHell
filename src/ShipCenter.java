@@ -142,9 +142,12 @@ public class ShipCenter extends GameFrame implements KeyListener {
 		gScr.drawString("Average FPS/UPS: " + df.format(averageFPS) + ", " +
 	                                df.format(averageUPS), 20, 25);  // was (10,55)
 		
+
 		// report time used and boxes used at bottom left
+/*
         Color color = fred.getShield().getPixelAt((int)getMousePosition().getX(), (int)getMousePosition().getY());
 		gScr.drawString("Red : " + color.getRed() + " Green : " + color.getBlue() + " Blue : " + color.getGreen(), 260, pHeight - 15);
+*/
 		gScr.drawString(fred.getPoints() + " points", 23, pHeight - 15);
 
 		// draw the pause and quit 'buttons'
