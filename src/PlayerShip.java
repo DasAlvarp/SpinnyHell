@@ -50,10 +50,14 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         shipImg = imgLoader.getImage("ship");
         drawIm = shipImg;
 
-        shield = new Shield(pos);
+        shield = new Shield(pos, frameX, frameY);
     }
 
 
+    public int getPoints()
+    {
+        return points;
+    }
     //returns color of pixel on ship image at specific coordinates on the whole screen
     public Color getPixelAt(int x, int y)
     {
@@ -223,12 +227,11 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         {
             if(shield.intersects(obs.getObstacles().get(x)))
             {
-               // points++;
+               points++;
             }
             else if(intersects(obs.getObstacles().get(x), collideRect, theGray))
             {
                 points--;
-                System.out.print("\nPoints" + points);
 
             }
             else
@@ -258,13 +261,10 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             {
                 for (int y = obs.getY(); y < maxY; y++)
                 {
-                    System.out.print(x + ", " + y);//why does this only happen 14 times but never return anything? 7x2 is not a reasonable dimension ever.
-                    if (getPixelAt(x, y) == theGray)
+                    if (getPixelAt(x, y).equals(theGray))
                     {
-                        System.out.println("yay");
                         return true;
                     }
-                    System.out.print("\n");
                 }
             }
 

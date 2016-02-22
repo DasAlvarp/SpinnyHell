@@ -144,7 +144,8 @@ public class ShipCenter extends GameFrame implements KeyListener {
 		
 		// report time used and boxes used at bottom left
 		Color color = fred.getPixelAt((int)getMousePosition().getX(), (int)getMousePosition().getY());
-		gScr.drawString("Red : " + color.getRed() + " Green : " + color.getBlue() + " Blue : " + color.getGreen(), 260, pHeight - 15);
+		//gScr.drawString("Red : " + color.getRed() + " Green : " + color.getBlue() + " Blue : " + color.getGreen(), 260, pHeight - 15);
+		gScr.drawString(fred.getPoints() + " points", 23, pHeight - 15);
 
 		// draw the pause and quit 'buttons'
 /*
@@ -199,8 +200,8 @@ public class ShipCenter extends GameFrame implements KeyListener {
 
 	@Override
 	protected void simpleUpdate() {
-		fred.update(inputs);
 		obs.update(inputs);
+		fred.update(inputs);
 		keys.clear();
 		fred.checkHits(obs);
 	}
