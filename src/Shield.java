@@ -19,6 +19,7 @@ public class Shield {
     Rectangle collider;
     Color theBlueThing;
 
+    Utils ute = new Utils();
     KeysList keys = new KeysList();
     public Shield(Position shipPos, int frameX, int frameY)
     {
@@ -70,7 +71,7 @@ public class Shield {
 
         rotate((int)pos.getRotationVelocity());
 
-        collider = new Rectangle(shipPos.getX(), shipPos.getY(), shieldImg.getWidth(), shieldImg.getHeight());
+        collider = new Rectangle(shipPos.getX() + 26, shipPos.getY() + 22, 114-26, 22);
 
 
     }
@@ -101,28 +102,9 @@ public class Shield {
 
     public boolean intersects(Obstacle obs)//checks for intersection, first over image, then over color
     {
-        if(collider.intersects(obs.getRect()))
+        if(ute.rotateRect(collider, pos.getX(), pos.getY(), pos.getOrientation()).intersects(obs.getRect()))
         {
-            int maxX = frameX;
-            int maxY = frameY;
-            if(maxX > obs.getX() + obs.getWidth())
-            {
-                maxX = obs.getX() + obs.getWidth();
-            }
-            if(maxY > obs.getY() + obs.getHeight())
-            {
-                maxY = obs.getY() + obs.getHeight();
-            }
-            for (int x = obs.getX(); x < maxX; x++)
-            {
-                for (int y = obs.getY(); y < maxY; y++)
-                {
-                    if (getPixelAt(x, y).equals(theBlueThing))
-                    {
-                        return true;
-                    }
-                }
-            }
+            return true;
         }
         return false;
     }
