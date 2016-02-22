@@ -10,8 +10,8 @@ import java.util.Random;
  * Created by alvarpq on 2/17/2016.
  */
 public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
-    private final int MAX_SIDE_VELOCITY = 6;
-    private final int MAX_FORWARD_VELOCITY = 15;
+    private final int MAX_SIDE_VELOCITY = 4;
+    private final int MAX_FORWARD_VELOCITY = 7;
 
     int frameX, frameY;//screen dimensions
     Position pos;//position data of ship
@@ -187,18 +187,23 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     {
         if(x == ks.getBoostUp())
         {
-            forwardTranslate(7);
+            forwardTranslate(4);
         }
         else if(x == ks.getRbLeft())
         {
-            relativeTranslate(5);
+            relativeTranslate(3);
             pos.setRotationVelocity(pos.getRotationVelocity() - 1);
         }
         else if(x == ks.getRbRight())
         {
-            relativeTranslate(-5);
+            relativeTranslate(-3);
             pos.setRotationVelocity(pos.getRotationVelocity() + 1);
         }
+    }
+
+    public Shield getShield()
+    {
+        return shield;
     }
 
     public void forwardTranslate(double distance)
@@ -231,7 +236,8 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             }
             else if(intersects(obs.getObstacles().get(x), collideRect, theGray))
             {
-                points--;
+                //points--;
+                newObs.add(obs.getObstacles().get(x));
 
             }
             else

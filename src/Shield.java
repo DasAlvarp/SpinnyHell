@@ -17,7 +17,7 @@ public class Shield {
     int frameX;
     int frameY;
     Rectangle collider;
-    Color theBlueThing = new Color(75,198,243);
+    Color theBlueThing;
 
     KeysList keys = new KeysList();
     public Shield(Position shipPos, int frameX, int frameY)
@@ -30,6 +30,7 @@ public class Shield {
         randy = new Random();
         this.frameX = frameX;
         this.frameY = frameY;
+        theBlueThing = getPixelAt(frameX / 2, frameY / 2 -35 );
     }
 
 
@@ -69,7 +70,8 @@ public class Shield {
 
         rotate((int)pos.getRotationVelocity());
 
-        collider = new Rectangle(pos.getX(), pos.getY(), shieldImg.getWidth(), shieldImg.getHeight());
+        collider = new Rectangle(shipPos.getX(), shipPos.getY(), shieldImg.getWidth(), shieldImg.getHeight());
+
 
     }
 
@@ -113,14 +115,10 @@ public class Shield {
             }
             for (int x = obs.getX(); x < maxX; x++)
             {
-                System.out.print("\n");
                 for (int y = obs.getY(); y < maxY; y++)
                 {
-                    System.out.println("DOOT DOOT MOTHEFUCKERS");
                     if (getPixelAt(x, y).equals(theBlueThing))
                     {
-                        System.out.println("THAT'S RIGHT BITCH");
-
                         return true;
                     }
                 }
@@ -132,20 +130,21 @@ public class Shield {
 
     public Color getPixelAt(int x, int y)
     {
-        BufferedImage drawIm = imgSfx.getRotatedImage(shieldImg, (int)pos.getOrientation());
-        int imgLeft = pos.getX() - 35;
-        int imgTop = pos.getY() - 35;
-        if(x >= imgLeft + drawIm.getWidth() || x < imgLeft)
+        BufferedImage draw = imgSfx.getRotatedImage(shieldImg, (int)pos.getOrientation());
+        int imgLeft = pos.getX() - 70;
+        int imgTop = pos.getY() - 70;
+        if(x >= imgLeft + draw.getWidth() || x < imgLeft)
         {
             return Color.BLACK;
         }
-        else if(y >= imgTop + drawIm.getHeight() || y < imgTop)
+        else if(y >= imgTop + draw.getHeight() || y < imgTop)
         {
             return Color.BLACK;
         }
         else
         {
-            return new Color(shieldImg.getRGB(x - imgLeft, y - imgTop));
+            System.out.println(new Color(draw.getRGB(x - imgLeft, y - imgTop)));
+            return new Color(draw.getRGB(x - imgLeft, y - imgTop));
         }
     }
 

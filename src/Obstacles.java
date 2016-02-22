@@ -64,26 +64,26 @@ public class Obstacles {
             case 0:
                 x = randy.nextInt(frameX);
                 y = 1;
-                velX = 8 * (randy.nextDouble() - 0.5);
-                velY = 4 * randy.nextDouble();
+                velX = 4 * (randy.nextDouble() - 0.5);
+                velY = 2 * randy.nextDouble();
                 break;
             case 1:
                 x = randy.nextInt(frameX);
                 y = frameY - 1;
-                velX = 8 * (randy.nextDouble() - 0.5);
-                velY = -4 * randy.nextDouble();
+                velX = 4 * (randy.nextDouble() - 0.5);
+                velY = -2 * randy.nextDouble();
                 break;
             case 2:
                 x = 1;
                 y = randy.nextInt(frameY);
-                velX = 4 * randy.nextDouble();
-                velY = 8 * (randy.nextDouble() - 0.5);
+                velX = 2 * randy.nextDouble();
+                velY = 4 * (randy.nextDouble() - 0.5);
                 break;
             default:
                 x = frameX - 1;
                 y = randy.nextInt(frameY);
-                velX = -4 * randy.nextDouble();
-                velY = 8 * (randy.nextDouble() - 0.5);
+                velX = -2 * randy.nextDouble();
+                velY = 4 * (randy.nextDouble() - 0.5);
                 break;
         }
 
