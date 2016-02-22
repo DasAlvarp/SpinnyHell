@@ -14,7 +14,7 @@ public class Obstacle {
         rect = new Rectangle(pos.getX(), pos.getY(), width, height);
     }
 
-
+    //draws the ghing.
     public void draw(Graphics g)
     {
         g.setColor(Color.red);

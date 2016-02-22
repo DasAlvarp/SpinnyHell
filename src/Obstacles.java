@@ -59,7 +59,6 @@ public class Obstacles {
     {
         int x, y;
         double velY, velX;
-        Position pos;
 
         switch (randy.nextInt(4)) {
             case 0:
@@ -88,9 +87,8 @@ public class Obstacles {
                 break;
         }
 
-        pos = new Position(x, y, velX, velY);
 
-        return new Obstacle(pos);
+        return new Obstacle(new Position(x, y, velX, velY));
     }
 
     public void draw(Graphics g)

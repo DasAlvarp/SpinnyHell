@@ -73,7 +73,7 @@ public class Shield {
 
     public void draw(Graphics g)//draws player. Adding position data soon.
     {
-        drawImage(g, drawIm, pos.getX() - drawIm.getWidth() / 3, pos.getY() - drawIm.getHeight() / 2);
+        drawImage(g, drawIm, pos.getX() - drawIm.getWidth() / 2, pos.getY() - drawIm.getHeight() / 2);
     }
 
     public boolean intersects(Obstacle obs)

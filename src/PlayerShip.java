@@ -16,7 +16,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     int frameX, frameY;//screen dimensions
     Position pos;//position data of ship
     KeysList ks = new KeysList();
-    int dimsX = 17, dimsY = 41;
+    int dimsX = 45, dimsY = 45;
     int points = 0;
 
     BufferedImage literallyTheWholeScreen;
@@ -34,6 +34,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     double sideVelocity = 0;
 
     int maxRotate = 3;
+    Rectangle collideRect;
 
     ImagesLoader imgLoader;
     ImageSFXs imgSfx;
@@ -52,10 +53,33 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         shield = new Shield(pos);
     }
 
+
+    //returns color of pixel on ship image at specific coordinates on the whole screen
+    public Color getPixelAt(int x, int y)
+    {
+        BufferedImage drawIm = imgSfx.getRotatedImage(shipImg, (int)pos.getOrientation());
+        int imgLeft = pos.getX() - dimsX / 2;
+        int imgTop = pos.getY() - dimsY / 2;
+        if(x >= imgLeft + drawIm.getWidth() || x < imgLeft)
+        {
+            return Color.BLACK;
+        }
+        else if(y >= imgTop + drawIm.getHeight() || y < imgTop)
+        {
+            return Color.BLACK;
+        }
+        else
+        {
+            return new Color(shipImg.getRGB(x - imgLeft, y - imgTop));
+        }
+    }
+
     public void draw(Graphics g)//draws player. Adding position data soon.
     {
         shield.draw(g);
         drawImage(g, drawIm, pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
+        g.setColor(Color.MAGENTA);
+        //g.fillRect((int)collideRect.getX(), (int)collideRect.getY(), (int)collideRect.getWidth(), (int)collideRect.getHeight());
         literallyTheWholeScreen = new BufferedImage(frameX, frameY, BufferedImage.TYPE_4BYTE_ABGR);
     }
 
@@ -189,14 +213,14 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         drawIm = imgSfx.getRotatedImage(shipImg, (int)pos.getOrientation());
     }
 
+    //checks to see if stuff intersects
     public synchronized void checkHits(Obstacles obs)
     {
         ArrayList<Obstacle> newObs = new ArrayList<>();
-        Rectangle collideRect = new Rectangle(drawIm.getMinX(), drawIm.getMinY(), drawIm.getWidth(), drawIm.getHeight());
+        collideRect = new Rectangle(pos.getX(), pos.getY() - drawIm.getHeight() / 2, drawIm.getWidth(), drawIm.getHeight());
 
         for(int x = 0; x < obs.getObstacles().size(); x++)
         {
-            System.out.println("MD is literally aids");
             if(shield.intersects(obs.getObstacles().get(x)))
             {
                // points++;
@@ -204,11 +228,11 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             else if(intersects(obs.getObstacles().get(x), collideRect, theGray))
             {
                 points--;
-                System.out.print("\n" + points);
+                System.out.print("\nPoints" + points);
+
             }
             else
             {
-                System.out.println("no really, I mean it");
                 newObs.add(obs.getObstacles().get(x));
             }
         }
@@ -218,18 +242,33 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
     private boolean intersects(Obstacle obs, Rectangle collider, Color theGray)//checks for intersection, first over image, then over color
     {
-        if(collider.intersects(obs.getRect())) {
-            return true;
-            /*for (int x = obs.getX(); x < obs.getWidth() + obs.getX(); x++) {
-                for (int y = obs.getY(); y < obs.getHeight() + obs.getY(); y++) {
-                    if (new Color(literallyTheWholeScreen.getColorModel().getRGB(new Point(x, y))) == theGray) {
+        if(collider.intersects(obs.getRect()))
+        {
+            int maxX = frameX;
+            int maxY = frameY;
+            if(maxX > obs.getX() + obs.getWidth())
+            {
+                maxX = obs.getX() + obs.getWidth();
+            }
+            if(maxY > obs.getY() + obs.getHeight())
+            {
+                maxY = obs.getY() + obs.getHeight();
+            }
+            for (int x = obs.getX(); x < maxX; x++)
+            {
+                for (int y = obs.getY(); y < maxY; y++)
+                {
+                    System.out.print(x + ", " + y);//why does this only happen 14 times but never return anything? 7x2 is not a reasonable dimension ever.
+                    if (getPixelAt(x, y) == theGray)
+                    {
                         System.out.println("yay");
                         return true;
                     }
+                    System.out.print("\n");
                 }
-            }*/
+            }
+
         }
-        System.out.println("nuttin");
         return false;
     }
 

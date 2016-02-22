@@ -98,7 +98,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
         {
             inputs[x] = false;
         }
-		obs = new Obstacles(1, pWidth, pHeight);
+		obs = new Obstacles(14, pWidth, pHeight);
 		fred = new PlayerShip(pWidth, pHeight);
 		addKeyListener(this);
 
@@ -143,19 +143,12 @@ public class ShipCenter extends GameFrame implements KeyListener {
 	                                df.format(averageUPS), 20, 25);  // was (10,55)
 		
 		// report time used and boxes used at bottom left
-//		gScr.drawString("MouseY : " + getMousePosition().getY(), 260, pHeight - 15);
+		Color color = fred.getPixelAt((int)getMousePosition().getX(), (int)getMousePosition().getY());
+		gScr.drawString("Red : " + color.getRed() + " Green : " + color.getBlue() + " Blue : " + color.getGreen(), 260, pHeight - 15);
 
 		// draw the pause and quit 'buttons'
 /*
-		try {
-			Robot robo = new Robot();
-            BufferedImage efficency = robo.createScreenCapture(new Rectangle(0,0,getWidth(), getHeight()));
-            Color newCol = new Color(efficency.getRGB((int)getMousePosition().getX(), (int)getMousePosition().getY()));
-			gScr.drawString("R : " + newCol.getRed() + " G : " + newCol.getGreen() + " B : " + newCol.getBlue(), 10, pHeight - 15);
-
-		} catch (AWTException e) {
-			e.printStackTrace();
-		}
+\
 */
 
 		gScr.setColor(Color.black);
