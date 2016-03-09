@@ -479,9 +479,9 @@ public abstract class GameFrame extends JFrame implements Runnable, ImagesPlayer
 		DisplayMode[] modes = gd.getDisplayModes();
 		showModes(modes);
 
-		for (int i = 0; i < modes.length; i++) {
-			if (width == modes[i].getWidth() && height == modes[i].getHeight()
-					&& bitDepth == modes[i].getBitDepth())
+		for (DisplayMode mode : modes) {
+			if (width == mode.getWidth() && height == mode.getHeight()
+					&& bitDepth == mode.getBitDepth())
 				return true;
 		}
 		return false;

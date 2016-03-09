@@ -2,9 +2,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-/**
- * Created by alvarpq on 2/19/2016.
- */
+
 public class Shield {
 
     Position pos;
@@ -17,6 +15,7 @@ public class Shield {
     int frameX;
     int frameY;
     Rectangle collider;
+    Polygon hitbox;
     Color theBlueThing;
 
     Utils ute = new Utils();
@@ -71,8 +70,9 @@ public class Shield {
 
         rotate((int)pos.getRotationVelocity());
 
-        collider = new Rectangle(shipPos.getX() + 26, shipPos.getY() + 22, 114-26, 22);
+        collider = new Rectangle(shipPos.getX() - 44, shipPos.getY() - 48, 114 - 26, 22);//not sure exactly where these numbers come from but they work.
 
+        hitbox = ute.rotateRect(collider, pos.getX(), pos.getY(), pos.getOrientation());
 
     }
 
@@ -102,11 +102,7 @@ public class Shield {
 
     public boolean intersects(Obstacle obs)//checks for intersection, first over image, then over color
     {
-        if(ute.rotateRect(collider, pos.getX(), pos.getY(), pos.getOrientation()).intersects(obs.getRect()))
-        {
-            return true;
-        }
-        return false;
+        return hitbox.intersects(obs.getRect());
     }
 
 

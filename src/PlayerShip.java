@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     KeysList ks = new KeysList();
     int dimsX = 45, dimsY = 45;
     int points = 0;
+    int hp = 5;
 
     BufferedImage literallyTheWholeScreen;
 
@@ -53,7 +53,9 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         shield = new Shield(pos, frameX, frameY);
     }
 
-
+    public int getHp(){
+        return hp;
+    }
     public int getPoints()
     {
         return points;
@@ -236,8 +238,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             }
             else if(intersects(obs.getObstacles().get(x), collideRect, theGray))
             {
-                points--;
-
+                hp--;
             }
             else
             {

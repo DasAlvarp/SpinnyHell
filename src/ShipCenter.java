@@ -2,22 +2,14 @@
 // Roger Mailler, January 2009, adapted from
 // Andrew Davison, April 2005, ad@fivedots.coe.psu.ac.th
 
-/* A worm moves around the screen and the user must
- click (press) on its head to complete the game.
+/* You control a ship. WAD do move, J and L to move shield
+Hit red things with shield to get points.
+Hit red things with ship to get dead.
 
- If the user misses the worm's head then a blue box
- will be added to the screen (if the worm's body was
- not clicked upon).
+I plan on implementing controller support and making this PvP only, because that sounds more interesting to me.
+Maybe add red things as power ups, buffs, or maybe make it so the ships can shoot them at each other.
 
- A worm cannot move over a box, so the added obstacles
- *may* make it easier to catch the worm.
-
- A worm starts at 0 length and increases to a maximum
- length which it keeps from then on.
-
- A score is displayed on screen at the end, calculated
- from the number of boxes used and the time taken. Less
- boxes and less time mean a higher score.
+Anyway, hopefully that explains why this isn't totally asteroids
 
  -------------
 
@@ -50,8 +42,6 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -66,13 +56,10 @@ public class ShipCenter extends GameFrame implements KeyListener {
 
 	private PlayerShip fred; // the worm
 	private Obstacles obs; // the obstacles
-	private int boxesUsed = 0;
     private boolean[] inputs;
 
-	private int score = 0;
 	private Font font;
 	private FontMetrics metrics;
-	private ArrayList<Integer> keys;
 
 
 	// used by quit 'button'
@@ -102,7 +89,6 @@ public class ShipCenter extends GameFrame implements KeyListener {
 		fred = new PlayerShip(pWidth, pHeight);
 		addKeyListener(this);
 
-		keys = new ArrayList<>();
 		// set up message font
 		font = new Font("SansSerif", Font.BOLD, 24);
 		metrics = this.getFontMetrics(font);
@@ -120,12 +106,6 @@ public class ShipCenter extends GameFrame implements KeyListener {
 			isOverPauseButton = pauseArea.contains(x, y) ? true : false;
 			isOverQuitButton = quitArea.contains(x, y) ? true : false;
 		}
-	}
-
-	public void setBoxNumber(int no)
-	// called from Obstacles object
-	{
-		boxesUsed = no;
 	}
 
 
@@ -149,21 +129,23 @@ public class ShipCenter extends GameFrame implements KeyListener {
 		gScr.drawString("Red : " + color.getRed() + " Green : " + color.getBlue() + " Blue : " + color.getGreen(), 260, pHeight - 15);
 */
 		gScr.drawString(fred.getPoints() + " points", 23, pHeight - 15);
+		gScr.drawString(fred.getHp() + " HP", 23, pHeight - 35);
 
 		// draw the pause and quit 'buttons'
 /*
 \
 */
-
 		gScr.setColor(Color.black);
 
 		// draw game elements: the obstacles and the worm
 		obs.draw(gScr);
 		fred.draw(gScr);
+		drawButtons(gScr);
+
 	} // end of simpleRender()
 
 	private void drawButtons(Graphics g) {
-		g.setColor(Color.black);
+		g.setColor(Color.WHITE);
 
 		// draw the pause 'button'
 		if (isOverPauseButton)
@@ -193,7 +175,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
 	protected void gameOverMessage(Graphics g)
 	// center the game-over message in the panel
 	{
-		String msg = "Game Over. Your Score: " + score;
+		String msg = "Game Over. Your Score: " + fred.getPoints();
 		int x = (pWidth - metrics.stringWidth(msg)) / 2;
 		int y = (pHeight - metrics.getHeight()) / 2;
 		g.setColor(Color.red);
@@ -205,13 +187,23 @@ public class ShipCenter extends GameFrame implements KeyListener {
 	protected void simpleUpdate() {
 		obs.update(inputs);
 		fred.update(inputs);
-		keys.clear();
 		fred.checkHits(obs);
+		if(fred.getHp() <= 0)
+		{
+			gameOver = true;
+		}
 	}
 
 	@Override
 	protected void mousePress(int x, int y) {
-
+        if(quitArea.contains(x,y))
+        {
+            stopGame();
+        }
+        else if(pauseArea.contains(x, y))
+        {
+            pauseGame();
+        }
 	}
 
 	public static void main(String args[])
