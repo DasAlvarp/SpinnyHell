@@ -1,2 +1,13 @@
 o ship.png
-o shield.png
+o shield-0.png
+o shield-1.png
+o shield-2.png
+o shield-3.png
+o shield-4.png
+o flame-1.png
+o flame-2.png
+o left-1.png
+o left-2.png
+o right-1.png
+o right-2.png
+o blank.png

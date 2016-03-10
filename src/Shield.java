@@ -17,6 +17,7 @@ public class Shield {
     Rectangle collider;
     Polygon hitbox;
     Color theBlueThing;
+    int animNum = 0;
 
     Utils ute = new Utils();
     KeysList keys = new KeysList();
@@ -24,7 +25,7 @@ public class Shield {
     {
         imgLoader = new ImagesLoader("Images/imsInfo.txt");
         imgSfx = new ImageSFXs();
-        shieldImg = imgLoader.getImage("shield");
+        shieldImg = imgLoader.getImage("shield-" + animNum);
         drawIm = shieldImg;
         pos = new Position(shipPos.getX(), shipPos.getY());
         randy = new Random();
@@ -48,6 +49,7 @@ public class Shield {
 
     public void update(Position shipPos)//updates sheld's position and rotational details
     {
+
         if(pos.getRotationVelocity() > maxRotate)
         {
             pos.setRotationVelocity(maxRotate);
@@ -81,6 +83,12 @@ public class Shield {
         pos.setRotationVelocity(rotation);
         drawIm = imgSfx.getRotatedImage(shieldImg, (int)pos.getOrientation());
     }
+
+    public void setImg(int animNum)
+    {
+        shieldImg = imgLoader.getImage("shield-" + animNum);
+    }
+
 
     public void draw(Graphics g)//draws player. Adding position data soon.
     {
@@ -125,6 +133,4 @@ public class Shield {
             return new Color(draw.getRGB(x - imgLeft, y - imgTop));
         }
     }
-
-
 }

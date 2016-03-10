@@ -24,6 +24,13 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     BufferedImage shipImg;
     BufferedImage drawIm;
 
+    BufferedImage left;
+    BufferedImage right;
+    BufferedImage flame;
+    int lNum = 0;
+    int rNum = 0;
+    int fNum = 0;
+
     Shield shield;
     Color theGray = new Color(127, 127, 127);
 
@@ -48,6 +55,9 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         imgLoader = new ImagesLoader("Images/imsInfo.txt");
         imgSfx = new ImageSFXs();
         shipImg = imgLoader.getImage("ship");
+        left = imgLoader.getImage("blank");
+        right = imgLoader.getImage("blank");
+        flame = imgLoader.getImage("blank");
         drawIm = shipImg;
 
         shield = new Shield(pos, frameX, frameY);
@@ -82,8 +92,41 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
     public void draw(Graphics g)//draws player. Adding position data soon.
     {
+        if(fNum != 0)
+        {
+            flame = imgLoader.getImage("flame-" + fNum);
+        }
+        else
+        {
+            flame = imgLoader.getImage("blank");
+        }
+
+        if(lNum != 0)
+        {
+            left = imgLoader.getImage("left-" + lNum);
+        }
+        else
+        {
+            left = imgLoader.getImage("blank");
+        }
+
+        if(rNum != 0)
+        {
+            right = imgLoader.getImage("right-" + rNum);
+        }
+        else
+        {
+            right = imgLoader.getImage("blank");
+        }
+
         shield.draw(g);
+        drawImage(g,  imgSfx.getRotatedImage(right, (int)pos.getOrientation()), pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
+        drawImage(g, imgSfx.getRotatedImage(left, (int)pos.getOrientation()), pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
         drawImage(g, drawIm, pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
+
+        drawImage(g, imgSfx.getRotatedImage(flame, (int)pos.getOrientation()), pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
+
+
         g.setColor(Color.MAGENTA);
         //g.fillRect((int)collideRect.getX(), (int)collideRect.getY(), (int)collideRect.getWidth(), (int)collideRect.getHeight());
         literallyTheWholeScreen = new BufferedImage(frameX, frameY, BufferedImage.TYPE_4BYTE_ABGR);
@@ -93,12 +136,17 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     //updates. Has a queue of key events.
     public void update(boolean[] updateQueue)
     {
+        fNum = 0;
+        lNum = 0;
+        rNum = 0;
         for (int x = 0; x < updateQueue.length; x++) {//for the whole list. In case multiple keys are down.
             if(updateQueue[x]) {
                 updatePos(x);
                 shield.updatePos(x);
             }
         }
+
+        shield.setImg((5 - hp)%5);
 
         //updating rotational velocity
         if(pos.getRotationVelocity() > maxRotate)
@@ -189,15 +237,21 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     {
         if(x == ks.getBoostUp())
         {
+            fNum = randy.nextInt(2) + 1;
             forwardTranslate(4);
         }
         else if(x == ks.getRbLeft())
         {
+            rNum = lNum % 2 + 1;
+
             relativeTranslate(3);
             pos.setRotationVelocity(pos.getRotationVelocity() - 1);
         }
         else if(x == ks.getRbRight())
         {
+
+            lNum = randy.nextInt(2) + 1;
+
             relativeTranslate(-3);
             pos.setRotationVelocity(pos.getRotationVelocity() + 1);
         }
