@@ -19,6 +19,9 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     int points = 0;
     int hp = 5;
 
+    ClipsLoader clippy = new ClipsLoader("clipsInfo.txt");
+
+
     BufferedImage literallyTheWholeScreen;
 
     BufferedImage shipImg;
@@ -46,6 +49,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     ImagesLoader imgLoader;
     ImageSFXs imgSfx;
 
+    public String[] songNames = {"engine", "rotate", "side", "sound1"};
     public PlayerShip(int width, int height)
     {
         frameX = width;
@@ -61,6 +65,8 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         drawIm = shipImg;
 
         shield = new Shield(pos, frameX, frameY);
+        playClip(0, false);
+
     }
 
     public int getHp(){
@@ -237,6 +243,8 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     {
         if(x == ks.getBoostUp())
         {
+            playClip(0, true);
+
             fNum = randy.nextInt(2) + 1;
             forwardTranslate(4);
         }
@@ -323,6 +331,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
                 {
                     if (getPixelAt(x, y).equals(theGray))
                     {
+                        playClip(3,false);
                         return true;
                     }
                 }
@@ -348,6 +357,11 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     public void sequenceEnded(String imageName) {
         System.out.println(imageName + " sequence has ended");
 
+    }
+
+    public void playClip(int i, boolean bool)
+    {
+        clippy.play(songNames[i], bool);
     }
 
     @Override
