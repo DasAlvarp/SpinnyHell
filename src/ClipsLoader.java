@@ -148,6 +148,11 @@ public class ClipsLoader
 
   // -------------------------------------------------------
 
+  public void setVolume(String namem, float v)
+  {
+    ClipInfo ci = (ClipInfo) clipsMap.get(namem);
+    ci.setVolume(v);
+  }
 
   public void setWatcher(String name, SoundsWatcher sw)
   /* Set up a watcher for the clip. It will be notified when

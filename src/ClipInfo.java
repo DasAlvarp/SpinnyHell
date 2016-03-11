@@ -70,6 +70,8 @@ public class ClipInfo implements LineListener
         stream = AudioSystem.getAudioInputStream(newFormat, stream);
         System.out.println("Converted Audio format: " + newFormat);
         format = newFormat;
+
+
       }
 
       DataLine.Info info = new DataLine.Info(Clip.class, format);
@@ -151,10 +153,15 @@ public class ClipInfo implements LineListener
       clip.close();
     }
   }
-
+public void setVolume(float vol)
+{
+  FloatControl gainCont = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+  gainCont.setValue(vol);
+}
 
   public void play(boolean toLoop)
   { if (clip != null) {
+
       isLooping = toLoop;
       clip.start(); // start playing
     }

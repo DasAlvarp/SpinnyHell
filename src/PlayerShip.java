@@ -65,7 +65,12 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         drawIm = shipImg;
 
         shield = new Shield(pos, frameX, frameY);
-        playClip(0, false);
+        clippy.setVolume(songNames[0], -20.0f);
+
+        for(int x = 2; x < 4; x++)
+        {
+            clippy.setVolume(songNames[x], -20.0f);
+        }
 
     }
 
@@ -243,13 +248,14 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     {
         if(x == ks.getBoostUp())
         {
-            playClip(0, true);
 
+            playClip(0,false);
             fNum = randy.nextInt(2) + 1;
             forwardTranslate(4);
         }
         else if(x == ks.getRbLeft())
         {
+            playClip(2,false);
             rNum = lNum % 2 + 1;
 
             relativeTranslate(3);
@@ -259,9 +265,13 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         {
 
             lNum = randy.nextInt(2) + 1;
-
+            playClip(2,false);
             relativeTranslate(-3);
             pos.setRotationVelocity(pos.getRotationVelocity() + 1);
+        }
+        else if( x == ks.getShieldLeft() || x == ks.getShieldRight())
+        {
+            playClip(1, false);
         }
     }
 
@@ -296,6 +306,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         {
             if(shield.intersects(obs.getObstacles().get(x)))
             {
+                playClip(3,false);
                points++;
             }
             else if(intersects(obs.getObstacles().get(x), collideRect, theGray))
@@ -331,7 +342,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
                 {
                     if (getPixelAt(x, y).equals(theGray))
                     {
-                        playClip(3,false);
+                        playClip(3, false);
                         return true;
                     }
                 }
