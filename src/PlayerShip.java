@@ -34,11 +34,14 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     int rNum = 0;
     int fNum = 0;
 
+    int player;
     Shield shield;
     Color theGray = new Color(127, 127, 127);
 
 
     Random randy = new Random();
+
+
 
     double forwardVelocity = 0;
     double sideVelocity = 0;
@@ -50,8 +53,9 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     ImageSFXs imgSfx;
 
     public String[] songNames = {"engine", "rotate", "side", "sound1"};
-    public PlayerShip(int width, int height)
+    public PlayerShip(int width, int height, int cont)
     {
+        player = cont;
         frameX = width;
         frameY = height;
         pos = new Position(width / 2, height / 2);//start player in middle of screen
@@ -64,7 +68,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         flame = imgLoader.getImage("blank");
         drawIm = shipImg;
 
-        shield = new Shield(pos, frameX, frameY);
+        shield = new Shield(pos, frameX, frameY, cont);
         clippy.setVolume(songNames[0], -20.0f);
 
         for(int x = 2; x < 4; x++)
@@ -246,14 +250,14 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
     public void updatePos(int x)//update positioning.
     {
-        if(x == ks.getBoostUp())
+        if(x == ks.getBoostUp(player))
         {
 
             playClip(0,false);
             fNum = randy.nextInt(2) + 1;
             forwardTranslate(4);
         }
-        else if(x == ks.getRbLeft())
+        else if(x == ks.getRbLeft(player))
         {
             playClip(2,false);
             rNum = lNum % 2 + 1;
@@ -261,7 +265,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             relativeTranslate(3);
             pos.setRotationVelocity(pos.getRotationVelocity() - 1);
         }
-        else if(x == ks.getRbRight())
+        else if(x == ks.getRbRight(player))
         {
 
             lNum = randy.nextInt(2) + 1;
@@ -269,7 +273,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             relativeTranslate(-3);
             pos.setRotationVelocity(pos.getRotationVelocity() + 1);
         }
-        else if( x == ks.getShieldLeft() || x == ks.getShieldRight())
+        else if( x == ks.getShieldLeft(player) || x == ks.getShieldRight(player))
         {
             playClip(1, false);
         }

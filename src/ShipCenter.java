@@ -86,7 +86,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
             inputs[x] = false;
         }
 		obs = new Obstacles(14, pWidth, pHeight);
-		fred = new PlayerShip(pWidth, pHeight);
+		fred = new PlayerShip(pWidth, pHeight, 0);
 		addKeyListener(this);
 
 		// set up message font

@@ -18,11 +18,13 @@ public class Shield {
     Polygon hitbox;
     Color theBlueThing;
     int animNum = 0;
+    int player;
 
     Utils ute = new Utils();
     KeysList keys = new KeysList();
-    public Shield(Position shipPos, int frameX, int frameY)
+    public Shield(Position shipPos, int frameX, int frameY, int contr)
     {
+        player = contr;
         imgLoader = new ImagesLoader("Images/imsInfo.txt");
         imgSfx = new ImageSFXs();
         shieldImg = imgLoader.getImage("shield-" + animNum);
@@ -37,11 +39,11 @@ public class Shield {
 
     public void updatePos(int keyDown)
     {
-        if(keys.getShieldRight() == keyDown)
+        if(keys.getShieldRight(player) == keyDown)
         {
             pos.setRotationVelocity(pos.getRotationVelocity() + 2);
         }
-        else if(keys.getShieldLeft() == keyDown)
+        else if(keys.getShieldLeft(player) == keyDown)
         {
             pos.setRotationVelocity(pos.getRotationVelocity() - 2);
         }
