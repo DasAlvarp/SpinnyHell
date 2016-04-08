@@ -21,7 +21,8 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     private int dimsX = 45, dimsY = 45;
     private int hitX = 16, hitY = 42;
     private int points = 0;
-    private int hp = 100;
+    private int hp = 2;
+
 
     private ClipsLoader clippy = new ClipsLoader("clipsInfo.txt");
 
@@ -62,11 +63,11 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         frameY = height;
         pos = new Position(width / 2 + 500 * (cont * 2 - 1), height / 2);//start player in middle of screen
 
-        imgLoader = new ImagesLoader("Images/imsInfo.txt");
         imgSfx = new ImageSFXs();
-        shipImg = imgLoader.getImage("ship");
-        left = imgLoader.getImage("blank");
+        imgLoader = new ImagesLoader("Images/imsInfo.txt");
         right = imgLoader.getImage("blank");
+        left = imgLoader.getImage("blank");
+        shipImg = imgLoader.getImage("ship");
         flame = imgLoader.getImage("blank");
         drawIm = shipImg;
 

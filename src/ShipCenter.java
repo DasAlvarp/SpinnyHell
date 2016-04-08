@@ -42,6 +42,7 @@ Anyway, hopefully that explains why this isn't totally asteroids
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -59,7 +60,18 @@ public class ShipCenter extends GameFrame implements KeyListener {
 	private Obstacles obs; // the obstacles
     private boolean[] inputs;
 
-	private Font font;
+    private boolean playerWin;
+    private int p1win = 0;
+    private int p2win = 0;
+
+    private boolean menuState = true;
+
+    private BufferedImage play;
+    private BufferedImage control;
+    private ImagesLoader imgLoader;
+
+
+    private Font font;
 	private FontMetrics metrics;
 
 
@@ -75,8 +87,22 @@ public class ShipCenter extends GameFrame implements KeyListener {
 
 
 	public ShipCenter(long period) {
-		super(period);
+
+        super(period);
+
 	}
+    private void drawImage(Graphics g2d, BufferedImage im, int x, int y) {
+		/* Draw the image, or a yellow box with ?? in it if there is no image. */
+        if (im == null) {
+            // System.out.println("Null image supplied");
+            g2d.setColor(Color.yellow);
+            g2d.fillRect(x, y, 20, 20);
+            g2d.setColor(Color.black);
+            g2d.drawString("??", x + 10, y + 10);
+        } else
+            g2d.drawImage(im, x, y, this);
+    } // end of drawImage()
+
 
 	@Override
 	protected void simpleInitialize() {
@@ -87,8 +113,10 @@ public class ShipCenter extends GameFrame implements KeyListener {
             inputs[x] = false;
         }
 		obs = new Obstacles(14, pWidth, pHeight);
-		fred = new PlayerShip(pWidth, pHeight, 0);
+
+        fred = new PlayerShip(pWidth, pHeight, 0);
 		bill = new PlayerShip(pWidth, pHeight, 1);
+
 		addKeyListener(this);
 
 		// set up message font
@@ -96,18 +124,31 @@ public class ShipCenter extends GameFrame implements KeyListener {
 		metrics = this.getFontMetrics(font);
 
 		// specify screen areas for the buttons
-		pauseArea = new Rectangle(pWidth - 100, pHeight - 45, 70, 15);
-		quitArea = new Rectangle(pWidth - 100, pHeight - 20, 70, 15);
-	}
+		pauseArea = new Rectangle(93, 233, 700, 225);
+		quitArea = new Rectangle(54, 667, 750, 260);
+
+        imgLoader = new ImagesLoader("Images/imsInfo.txt");
+        play = imgLoader.getImage("start2play");
+        control = imgLoader.getImage("controls");
+
+    }
 
 
 
 	@Override
 	protected void mouseMove(int x, int y) {
-		if (running) { // stops problems with a rapid move after pressing 'quit'
-			isOverPauseButton = pauseArea.contains(x, y) ? true : false;
-			isOverQuitButton = quitArea.contains(x, y) ? true : false;
-		}
+        isOverPauseButton = pauseArea.contains(x, y) ? true : false;
+        isOverQuitButton = quitArea.contains(x, y) ? true : false;
+
+        if (isOverPauseButton)
+        {
+            menuState = true;
+        }
+        else if(isOverQuitButton)
+        {
+            menuState = false;
+        }
+
 	}
 
 
@@ -145,34 +186,47 @@ public class ShipCenter extends GameFrame implements KeyListener {
 		bill.draw(gScr);
 		drawButtons(gScr);
 
-	} // end of simpleRender()
+
+    } // end of simpleRender()
 
 	private void drawButtons(Graphics g) {
-		g.setColor(Color.WHITE);
+        if(isPaused)
+        {
+            if(menuState)
+            {
+                drawImage(g, play, 0,0);
 
-		// draw the pause 'button'
-		if (isOverPauseButton)
-			g.setColor(Color.green);
 
-		g.drawOval(pauseArea.x, pauseArea.y, pauseArea.width, pauseArea.height);
-		if (isPaused)
-			g.drawString("Paused", pauseArea.x, pauseArea.y + 10);
-		else
-			g.drawString("Pause", pauseArea.x + 5, pauseArea.y + 10);
 
-		if (isOverPauseButton)
-			g.setColor(Color.black);
+                Font curF = g.getFont();
+                g.setFont(new Font("Monospace", Font.PLAIN, 45));
+                g.setColor(Color.black);
 
-		// draw the quit 'button'
-		if (isOverQuitButton)
-			g.setColor(Color.green);
+                if(playerWin)
+                {
+                    g.drawString("PLAYER 2", 1242, 263);
+                }
+                else
+                {
+                    g.drawString("PLAYER 1",1242, 263);
+                }
+                g.drawString("" + p1win, 1278, 581);
+                g.drawString("" + p2win, 1278, 690);
 
-		g.drawOval(quitArea.x, quitArea.y, quitArea.width, quitArea.height);
-		g.drawString("Quit", quitArea.x + 15, quitArea.y + 10);
 
-		if (isOverQuitButton)
-			g.setColor(Color.black);
+
+                g.setFont(curF);
+            }
+            else
+            {
+                drawImage(g, control, 0, 0);
+            }
+
+
+
+        }
 	} // drawButtons()
+
 
 	@Override
 	protected void gameOverMessage(Graphics g)
@@ -184,6 +238,12 @@ public class ShipCenter extends GameFrame implements KeyListener {
 		g.setColor(Color.red);
 		g.setFont(font);
 		g.drawString(msg, x, y);
+        obs = null;
+        fred = null;
+        bill = null;
+        simpleInitialize();
+        pauseGame();
+        gameOver = false;
 	} // end of gameOverMessage()
 
 	@Override
@@ -197,10 +257,14 @@ public class ShipCenter extends GameFrame implements KeyListener {
 		if(fred.getHp() <= 0)
 		{
 			gameOver = true;
+            playerWin = false;
+            p1win++;
 		}
 		if(bill.getHp() <= 0)
 		{
 			gameOver = true;
+            playerWin = true;
+            p2win++;
 		}
 	}
 
@@ -212,7 +276,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
         }
         else if(pauseArea.contains(x, y))
         {
-            pauseGame();
+            resumeGame();
         }
 	}
 

@@ -32,7 +32,7 @@ public abstract class GameFrame extends JFrame implements Runnable, ImagesPlayer
 
 	private Thread animator; // the thread that performs the animation
 	protected boolean running = false; // used to stop the animation thread
-	protected boolean isPaused = false;
+	protected boolean isPaused = true;
 	private boolean finishedOff = false;
 
 	protected long period; // period between drawing in _nanosecs_

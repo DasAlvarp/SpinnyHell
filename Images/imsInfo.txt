@@ -11,3 +11,5 @@ o left-2.png
 o right-1.png
 o right-2.png
 o blank.png
+o start2play.png
+o controls.png
