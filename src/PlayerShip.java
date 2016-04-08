@@ -21,7 +21,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     private int dimsX = 45, dimsY = 45;
     private int hitX = 16, hitY = 42;
     private int points = 0;
-    private int hp = 2;
+    private int hp = 50;
 
 
     private ClipsLoader clippy = new ClipsLoader("clipsInfo.txt");
@@ -283,7 +283,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             }
         }
 
-        shield.setImg((5 - hp/20)%5);
+        shield.setImg((50 - hp/10)%5);
 
         //updating rotational velocity
         if(pos.getRotationVelocity() > maxRotate)

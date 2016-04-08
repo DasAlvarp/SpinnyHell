@@ -10,7 +10,8 @@ public class Obstacles {
     int frameX, frameY;
     Random randy;
 
-    ArrayList<Obstacle> ships = new ArrayList<>();
+    ArrayList<Obstacle> pickup = new ArrayList<>();
+    ArrayList<Star> stars = new ArrayList<>();
 
     public Obstacles(int num, int width, int height)//creates all obstacles
     {
@@ -18,41 +19,46 @@ public class Obstacles {
         maxNum = num;
         frameX = width;
         frameY = height;
+        for(int x = 0; x < 500; x++)
+        {
+            stars.add(new Star(new Position(randy.nextInt(frameX), randy.nextInt(frameY))));
+        }
     }
+
 
     public synchronized void update(boolean[] inputs)//updates obstacles. If there aren't enough, there's a chance to make more
     {
 
-        for (Obstacle ship : ships)
+        for (Obstacle ship : pickup)
         {
             ship.update();
         }
 
-        int size = ships.size();
+        int size = pickup.size();
 
         ArrayList<Obstacle> shipsNew = new ArrayList<>();
-        for (Obstacle ship : ships) {
+        for (Obstacle ship : pickup) {
             if (!(ship.pos.getX() <= 0 || ship.pos.getY() <= 0 || ship.pos.getX() >= frameX || ship.pos.getY() >= frameY)) {
                 shipsNew.add(ship);
             }
         }
 
-        ships = shipsNew;
+        pickup = shipsNew;
 
         if(size < maxNum * randy.nextInt(2))
         {
-            ships.add(generateObstacle(frameX, frameY));
+            pickup.add(generateObstacle(frameX, frameY));
         }
     }
 
     public synchronized ArrayList<Obstacle> getObstacles()
     {
-        return ships;
+        return pickup;
     }
 
     public synchronized void setObstacles(ArrayList<Obstacle> nObs)
     {
-        ships = nObs;
+        pickup = nObs;
     }
 
     public synchronized Obstacle generateObstacle(int frameX, int frameY)
@@ -93,8 +99,12 @@ public class Obstacles {
 
     public void draw(Graphics g)
     {
-        for (Obstacle ship : ships) {
-            ship.draw(g);
+        for (Obstacle picku : pickup) {
+            picku.draw(g);
+        }
+        for(Star star: stars)
+        {
+            star.draw(g);
         }
     }
 

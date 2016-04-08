@@ -217,7 +217,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
 
                 }
                 g.drawString("" + p1win, 1278, 581);
-                g.drawString("" + p2win, 1278, 690);
+                g.drawString("" + p2win, 1278, 685);
 
 
 
@@ -263,14 +263,14 @@ public class ShipCenter extends GameFrame implements KeyListener {
 		if(fred.getHp() <= 0)
 		{
 			gameOver = true;
-            playerWin = 1;
-            p1win++;
+            playerWin = 2;
+            p2win++;
 		}
 		if(bill.getHp() <= 0)
 		{
 			gameOver = true;
-            playerWin = 2;
-            p2win++;
+            playerWin = 1;
+            p1win++;
 		}
 	}
 
