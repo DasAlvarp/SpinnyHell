@@ -22,6 +22,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     private int hitX = 16, hitY = 42;
     private int points = 0;
     private int hp = 50;
+    private int grab = 0;
 
 
     private ClipsLoader clippy = new ClipsLoader("clipsInfo.txt");
@@ -50,7 +51,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
     private ImagesLoader imgLoader;
     private ImageSFXs imgSfx;
-    private int boost = 100;
+    private int boost = 25;
 
     private Polygon hitbox;
 
@@ -208,6 +209,8 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
     public void draw(Graphics g)//draws player. Adding position data soon.
     {
+
+        //little fire animations
         if(fNum != 0)
         {
             flame = imgLoader.getImage("flame-" + fNum);
@@ -235,6 +238,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             right = imgLoader.getImage("blank");
         }
 
+        //drawing shield and player with rotation
         shield.draw(g);
         drawImage(g,  imgSfx.getRotatedImage(right, (int)pos.getOrientation()), pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
         drawImage(g, imgSfx.getRotatedImage(left, (int)pos.getOrientation()), pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
@@ -242,22 +246,52 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
         drawImage(g, imgSfx.getRotatedImage(flame, (int)pos.getOrientation()), pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
 
+
+        //boost bar has to look fancy
         g.setColor(Color.white);
-        if(player == 0)
+        if(player == 0)//boost bar management
         {
-            g.fillRect(20,frameY - 60, 300, 50);
-            g.setColor(Color.black);
-            g.drawString("B O O S T",110, frameY - 25);
+            g.fillRect(20,frameY - 60, 300, 50);//white rectangle
             g.setColor(Color.red);
-            g.fillRect(20, frameY - 60, 3 * boost, 50);
+            g.fillRect(20, frameY - 60, 3 * boost, 50);//red bar
+            if(boost < 100) {
+                g.setColor(Color.black);
+                g.drawString("B O O S T", 110, frameY - 25);
+            }
+            else
+            {
+                g.setColor(Color.cyan);
+                g.fillRect(20, frameY - 60, 3 * boost, 50);//red bar
+            }
+            if(grab > 0) {
+
+                g.setColor(new Color(Color.cyan.getRed(), Color.cyan.getBlue(), Color.cyan.getGreen(), grab ));
+
+                g.fillRect(20, frameY - 60, 3 * boost, 50);//red bar
+                grab-=5;
+            }
         }
         else
         {
             g.fillRect(frameX - 320,frameY - 60, 300, 50);
-            g.setColor(Color.black);
-            g.drawString("B O O S T",frameX - 220, frameY - 25);
+
             g.setColor(Color.red);
-            g.fillRect(frameX - 20 - (3 * boost), frameY - 60, 3 * boost, 50);
+            g.fillRect(frameX - 20 - (3 * boost), frameY - 60, 3 * boost, 50);//red bar
+            if(boost < 100) {
+                g.setColor(Color.black);
+                g.drawString("B O O S T", frameX - 220, frameY - 25);
+            }
+            else
+            {
+                g.setColor(Color.cyan);
+                g.fillRect(frameX - 20 - (3 * boost), frameY - 60, 3 * boost, 50);//red bar
+
+            }
+            if(grab > 0) {
+                g.setColor(new Color(Color.cyan.getRed(), Color.cyan.getBlue(), Color.cyan.getGreen(), grab ));
+                g.fillRect(20, frameY - 60, 3 * boost, 50);//red bar
+                grab-=5;
+            }
         }
 
         Font curF = g.getFont();
@@ -478,6 +512,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
                     boost += 5;
                 if(boost > 100)
                     boost = 100;
+                grab = 255;
             }
             else
             {
