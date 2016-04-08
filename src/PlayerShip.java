@@ -13,7 +13,7 @@ import java.util.Random;
  */
 public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     private final int MAX_SIDE_VELOCITY = 4;
-    private final int MAX_FORWARD_VELOCITY = 7;
+    private int mavForward = 7;
 
     private int frameX, frameY;//screen dimensions
     private Position pos;//position data of ship
@@ -21,7 +21,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     private int dimsX = 45, dimsY = 45;
     private int hitX = 16, hitY = 42;
     private int points = 0;
-    private int hp = 5;
+    private int hp = 100;
 
     private ClipsLoader clippy = new ClipsLoader("clipsInfo.txt");
 
@@ -49,6 +49,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
     private ImagesLoader imgLoader;
     private ImageSFXs imgSfx;
+    private int boost = 100;
 
     private Polygon hitbox;
 
@@ -84,31 +85,77 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
     public void checkOverlap(PlayerShip otherShip)
     {
-        Area overlap = new Area(getShield().getHitbox());
-        overlap.intersect(new Area(otherShip.getShield().getHitbox()));
-        if(!overlap.isEmpty())
+
+        Polygon sh1 = shield.getHitbox();
+        Polygon sh2 = otherShip.shield.getHitbox();
+        if(overlaps(sh1, sh2))
         {
             double vel = getShield().pos.getRotationVelocity();
             getShield().pos.setRotationVelocity(2 * otherShip.getShield().pos.getRotationVelocity());
             otherShip.getShield().pos.setRotationVelocity(2 * vel);
 
 
-            sideVelocity += 2 * getXvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation(), pos.getOrientation());
-            forwardVelocity += 2 * getYvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation(), pos.getOrientation());
+            double xv = 2 * getXvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation(), pos.getOrientation());
+            double yv = 2 * getYvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation(), pos.getOrientation());
             otherShip.forwardVelocity -= 2 * getYvelocity(forwardVelocity, sideVelocity, pos.getOrientation(), pos.getOrientation());
             otherShip.sideVelocity -= 2 * getXvelocity(forwardVelocity, sideVelocity, pos.getOrientation(), pos.getOrientation());
+
+            forwardVelocity += yv;
+            sideVelocity += xv;
         }
 
-        overlap = new Area(getUpdatedHitbox());
-        overlap.intersect(new Area(otherShip.getUpdatedHitbox()));
-        if(!overlap.isEmpty())
+        Polygon shi1 = getUpdatedHitbox();
+        Polygon shi2 = otherShip.getUpdatedHitbox();
+
+        if(overlaps(shi1, shi2))
         {
-            System.out.println("hi");
-            sideVelocity += 2 * getXvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation(), pos.getOrientation());
-            forwardVelocity += 2 * getYvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation(), pos.getOrientation());
-            otherShip.forwardVelocity -= 2 * getYvelocity(forwardVelocity, sideVelocity, pos.getOrientation(), otherShip.pos.getOrientation());
+            double sv = 2 * getXvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation(), pos.getOrientation());
+            double fv = 2 * getYvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation(), pos.getOrientation());
+
+            otherShip.forwardVelocity += 2 * getYvelocity(forwardVelocity, sideVelocity, pos.getOrientation(), otherShip.pos.getOrientation());
             otherShip.sideVelocity -= 2 * getXvelocity(forwardVelocity, sideVelocity, pos.getOrientation(), otherShip.pos.getOrientation());
+
+            forwardVelocity += fv;
+            sideVelocity += sv;
         }
+
+
+        if(overlaps(shi1, sh2))
+        {
+            hp -= 1;
+            double sv = 2 * getXvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation(), pos.getOrientation());
+            double fv = 2 * getYvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation(), pos.getOrientation());
+
+            otherShip.forwardVelocity += 2 * getYvelocity(forwardVelocity, sideVelocity, pos.getOrientation(), otherShip.pos.getOrientation());
+            otherShip.sideVelocity -= 2 * getXvelocity(forwardVelocity, sideVelocity, pos.getOrientation(), otherShip.pos.getOrientation());
+
+            forwardVelocity += fv;
+            sideVelocity += sv;
+        }
+
+        if(overlaps(shi2, sh1))
+        {
+
+            otherShip.setHp(otherShip.getHp() - 1);
+            double sv = 2 * getXvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation(), pos.getOrientation());
+            double fv = 2 * getYvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation(), pos.getOrientation());
+
+            otherShip.forwardVelocity += 2 * getYvelocity(forwardVelocity, sideVelocity, pos.getOrientation(), otherShip.pos.getOrientation());
+            otherShip.sideVelocity -= 2 * getXvelocity(forwardVelocity, sideVelocity, pos.getOrientation(), otherShip.pos.getOrientation());
+
+            forwardVelocity += fv;
+            sideVelocity += sv;
+        }
+
+
+    }
+
+    public boolean overlaps(Polygon a, Polygon b)
+    {
+        Area overlap = new Area(a);
+
+        overlap.intersect(new Area(b));
+        return !overlap.isEmpty();
     }
 
 
@@ -121,7 +168,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
     public double getYvelocity(double forwardVelocity, double sideVelocity, double thisAngle, double otherAngle)
     {
-        double yv = Math.cos(Math.toRadians(thisAngle + 90 - otherAngle)) * forwardVelocity;
+        double yv = Math.cos(Math.toRadians(thisAngle - otherAngle)) * forwardVelocity;
        // yv += Math.cos(Math.toRadians(thisAngle + 90)) * sideVelocity;
         return yv;
     }
@@ -129,6 +176,11 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     public int getHp(){
         return hp;
     }
+    public void setHp(int x)
+    {
+        hp = x;
+    }
+
     public int getPoints()
     {
         return points;
@@ -189,11 +241,25 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
         drawImage(g, imgSfx.getRotatedImage(flame, (int)pos.getOrientation()), pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
 
-        g.fillPolygon(hitbox);
-
-
-        g.setColor(Color.MAGENTA);
-        //g.fillRect((int)collideRect.getX(), (int)collideRect.getY(), (int)collideRect.getWidth(), (int)collideRect.getHeight());
+        g.setColor(Color.white);
+        if(player == 0)
+        {
+            g.fillRect(20,frameY - 60, 300, 50);
+            g.setColor(Color.black);
+            g.drawString("B O O S T",110, frameY - 25);
+            g.setColor(Color.red);
+            g.fillRect(20, frameY - 60, 3 * boost, 50);
+        }
+        else
+        {
+            g.fillRect(frameX - 320,frameY - 60, 300, 50);
+            g.setColor(Color.black);
+            g.drawString("B O O S T",frameX - 220, frameY - 25);
+            g.setColor(Color.red);
+            g.fillRect(frameX - 20 - (3 * boost), frameY - 60, 3 * boost, 50);
+        }
+        //g.fillPolygon(getUpdatedHitbox());
+        //g.fillPolygon(shield.getHitbox());
     }
 
 
@@ -210,7 +276,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             }
         }
 
-        shield.setImg((5 - hp)%5);
+        shield.setImg((5 - hp/20)%5);
 
         //updating rotational velocity
         if(pos.getRotationVelocity() > maxRotate)
@@ -249,13 +315,13 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         }
 
         //updating forward velocity
-        if(forwardVelocity > MAX_FORWARD_VELOCITY)
+        if(forwardVelocity > mavForward)
         {
-            forwardVelocity = MAX_FORWARD_VELOCITY;
+            forwardVelocity = mavForward;
         }
-        else if(forwardVelocity < -1 * MAX_FORWARD_VELOCITY)
+        else if(forwardVelocity < -1 * mavForward)
         {
-            forwardVelocity = -1 * MAX_FORWARD_VELOCITY;
+            forwardVelocity = -1 * mavForward;
         }
         else if(forwardVelocity > 0)
         {
@@ -336,6 +402,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             playClip(0,false);
             fNum = randy.nextInt(2) + 1;
             forwardTranslate(4);
+            mavForward = 7;
         }
         else if(x == ks.getRbLeft(player))
         {
@@ -356,6 +423,15 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         else if( x == ks.getShieldLeft(player) || x == ks.getShieldRight(player))
         {
             playClip(1, false);
+        }
+        else if(x == ks.getBoost(player) && boost > 0)
+        {
+            mavForward = 14;
+            boost--;
+            forwardTranslate(8);
+            fNum = randy.nextInt(2) + 1;
+            playClip(0,false);
+
         }
     }
 
@@ -388,14 +464,13 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
         for(int x = 0; x < obs.getObstacles().size(); x++)
         {
-            if(shield.intersects(obs.getObstacles().get(x)))
+            if(shield.intersects(obs.getObstacles().get(x)) || intersects(obs.getObstacles().get(x), collideRect, theGray))
             {
                 playClip(3,false);
-               points++;
-            }
-            else if(intersects(obs.getObstacles().get(x), collideRect, theGray))
-            {
-                hp--;
+                if(boost < 100)
+                    boost += 5;
+                if(boost > 100)
+                    boost = 100;
             }
             else
             {

@@ -7,6 +7,7 @@ public class KeysList {
     int[] rbRight = {68, 76};//D, L
     int[] shieldRight = {69, 79};//E, O
     int[] shieldLeft = {81, 85}; //Q, U
+    int[] boost = {83, 75 };//s, k
     public int getShieldRight(int cont) {
         return shieldRight[cont];
     }
@@ -28,6 +29,11 @@ public class KeysList {
     public int getRbRight(int cont)
     {
         return rbRight[cont];
+    }
+
+    public int getBoost(int cont)
+    {
+        return boost[cont];
     }
 
 
