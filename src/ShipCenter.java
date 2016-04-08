@@ -113,7 +113,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
         {
             inputs[x] = false;
         }
-		obs = new Obstacles(14, pWidth, pHeight);
+		obs = new Obstacles(35, pWidth, pHeight);
 
         fred = new PlayerShip(pWidth, pHeight, 0);
 		bill = new PlayerShip(pWidth, pHeight, 1);

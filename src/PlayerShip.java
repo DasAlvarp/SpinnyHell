@@ -163,16 +163,13 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
     public double getXvelocity(double forwardVelocity, double sideVelocity, double thisAngle, double otherAngle)
     {
-        double xv = Math.sin(Math.toRadians(thisAngle - otherAngle)) * forwardVelocity;
-         //xv += Math.sin(Math.toRadians(thisAngle + 90)) * sideVelocity;
-        return xv;
+        return Math.sin(Math.toRadians(thisAngle - otherAngle)) * forwardVelocity;
+
     }
 
     public double getYvelocity(double forwardVelocity, double sideVelocity, double thisAngle, double otherAngle)
     {
-        double yv = Math.cos(Math.toRadians(thisAngle - otherAngle)) * forwardVelocity;
-       // yv += Math.cos(Math.toRadians(thisAngle + 90)) * sideVelocity;
-        return yv;
+        return Math.cos(Math.toRadians(thisAngle - otherAngle)) * forwardVelocity;
     }
 
     public int getHp(){
@@ -211,9 +208,14 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     {
 
         //little fire animations
-        if(fNum != 0)
+        if(fNum > 0 && fNum < 3)
         {
             flame = imgLoader.getImage("flame-" + fNum);
+        }
+        else if(fNum != 0)
+        {
+            flame = imgLoader.getImage("flame-" + (fNum- 2));
+
         }
         else
         {
@@ -243,9 +245,11 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         drawImage(g,  imgSfx.getRotatedImage(right, (int)pos.getOrientation()), pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
         drawImage(g, imgSfx.getRotatedImage(left, (int)pos.getOrientation()), pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
         drawImage(g, drawIm, pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
-
-        drawImage(g, imgSfx.getRotatedImage(flame, (int)pos.getOrientation()), pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
-
+        if(fNum > 2)
+        {
+            imgSfx.drawResizedImage((Graphics2D)g, imgSfx.getRotatedImage(flame, (int) pos.getOrientation()), pos.getX() - dimsX / 2, pos.getY() - dimsY / 2, Math.abs(2 * Math.sin(Math.toRadians(pos.getOrientation()))), Math.abs(2 * Math.cos(Math.toRadians(pos.getOrientation()))));
+        }
+        drawImage(g, imgSfx.getRotatedImage(flame, (int) pos.getOrientation()), pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
 
         //boost bar has to look fancy
         g.setColor(Color.white);
@@ -470,7 +474,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             mavForward = 14;
             boost--;
             forwardTranslate(8);
-            fNum = randy.nextInt(2) + 1;
+            fNum = randy.nextInt(2) + 3;
             playClip(0,false);
 
         }
