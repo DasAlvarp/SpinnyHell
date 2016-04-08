@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
@@ -12,53 +14,53 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     private final int MAX_SIDE_VELOCITY = 4;
     private final int MAX_FORWARD_VELOCITY = 7;
 
-    int frameX, frameY;//screen dimensions
-    Position pos;//position data of ship
-    KeysList ks = new KeysList();
-    int dimsX = 45, dimsY = 45;
-    int points = 0;
-    int hp = 5;
+    private int frameX, frameY;//screen dimensions
+    private Position pos;//position data of ship
+    private KeysList ks = new KeysList();
+    private int dimsX = 45, dimsY = 45;
+    private int points = 0;
+    private int hp = 5;
 
-    ClipsLoader clippy = new ClipsLoader("clipsInfo.txt");
-
-
-    BufferedImage literallyTheWholeScreen;
-
-    BufferedImage shipImg;
-    BufferedImage drawIm;
-
-    BufferedImage left;
-    BufferedImage right;
-    BufferedImage flame;
-    int lNum = 0;
-    int rNum = 0;
-    int fNum = 0;
-
-    int player;
-    Shield shield;
-    Color theGray = new Color(127, 127, 127);
-
-
-    Random randy = new Random();
+    private ClipsLoader clippy = new ClipsLoader("clipsInfo.txt");
 
 
 
-    double forwardVelocity = 0;
-    double sideVelocity = 0;
+    private BufferedImage shipImg;
+    private BufferedImage drawIm;
 
-    int maxRotate = 3;
-    Rectangle collideRect;
+    private BufferedImage left;
+    private BufferedImage right;
+    private BufferedImage flame;
+    private int lNum = 0;
+    private int rNum = 0;
+    private int fNum = 0;
 
-    ImagesLoader imgLoader;
-    ImageSFXs imgSfx;
+    private int player;
+    private Shield shield;
+    private Color theGray = new Color(127, 127, 127);
 
-    public String[] songNames = {"engine", "rotate", "side", "sound1"};
+
+    private Random randy = new Random();
+
+
+
+    private double forwardVelocity = 0;
+    private double sideVelocity = 0;
+
+    private int maxRotate = 3;
+    private Rectangle collideRect;
+
+    private ImagesLoader imgLoader;
+    private ImageSFXs imgSfx;
+
+    private String[] songNames = {"engine", "rotate", "side", "sound1"};
+
     public PlayerShip(int width, int height, int cont)
     {
         player = cont;
         frameX = width;
         frameY = height;
-        pos = new Position(width / 2, height / 2);//start player in middle of screen
+        pos = new Position(width / 2 + 500 * (cont * 2 - 1), height / 2);//start player in middle of screen
 
         imgLoader = new ImagesLoader("Images/imsInfo.txt");
         imgSfx = new ImageSFXs();
@@ -76,6 +78,17 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             clippy.setVolume(songNames[x], -20.0f);
         }
 
+    }
+
+
+    public void checkOverlap(PlayerShip otherShip)
+    {
+        Area overlap = new Area(getShield().getHitbox());
+        overlap.intersect(new Area(otherShip.getShield().getHitbox()));
+        if(!overlap.isEmpty())
+        {
+            System.out.println("hi");
+        }
     }
 
     public int getHp(){
@@ -144,7 +157,6 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
         g.setColor(Color.MAGENTA);
         //g.fillRect((int)collideRect.getX(), (int)collideRect.getY(), (int)collideRect.getWidth(), (int)collideRect.getHeight());
-        literallyTheWholeScreen = new BufferedImage(frameX, frameY, BufferedImage.TYPE_4BYTE_ABGR);
     }
 
 

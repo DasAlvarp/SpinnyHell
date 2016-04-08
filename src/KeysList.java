@@ -2,7 +2,7 @@
  * Created by alvarpq on 2/17/2016.
  */
 public class KeysList {
-    int[] boostUp = {87, 105};//W,I
+    int[] boostUp = {87, 73};//W,I
     int[] rbLeft = {65, 74};//A, J
     int[] rbRight = {68, 76};//D, L
     int[] shieldRight = {69, 79};//E, O

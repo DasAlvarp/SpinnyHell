@@ -55,6 +55,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
 	private static int DEFAULT_FPS = 60;
 
 	private PlayerShip fred; // the worm
+	private PlayerShip bill;
 	private Obstacles obs; // the obstacles
     private boolean[] inputs;
 
@@ -87,6 +88,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
         }
 		obs = new Obstacles(14, pWidth, pHeight);
 		fred = new PlayerShip(pWidth, pHeight, 0);
+		bill = new PlayerShip(pWidth, pHeight, 1);
 		addKeyListener(this);
 
 		// set up message font
@@ -140,6 +142,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
 		// draw game elements: the obstacles and the worm
 		obs.draw(gScr);
 		fred.draw(gScr);
+		bill.draw(gScr);
 		drawButtons(gScr);
 
 	} // end of simpleRender()
@@ -187,8 +190,15 @@ public class ShipCenter extends GameFrame implements KeyListener {
 	protected void simpleUpdate() {
 		obs.update(inputs);
 		fred.update(inputs);
+		bill.update(inputs);
 		fred.checkHits(obs);
+		bill.checkHits(obs);
+        fred.checkOverlap(bill);
 		if(fred.getHp() <= 0)
+		{
+			gameOver = true;
+		}
+		if(bill.getHp() <= 0)
 		{
 			gameOver = true;
 		}

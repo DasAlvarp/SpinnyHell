@@ -77,7 +77,12 @@ public class Shield {
         collider = new Rectangle(shipPos.getX() - 44, shipPos.getY() - 48, 114 - 26, 22);//not sure exactly where these numbers come from but they work.
 
         hitbox = ute.rotateRect(collider, pos.getX(), pos.getY(), pos.getOrientation());
+    }
 
+
+    public Polygon getHitbox()
+    {
+        return hitbox;
     }
 
     public void rotate(int rotation)//rotates a certain amount of degrees
