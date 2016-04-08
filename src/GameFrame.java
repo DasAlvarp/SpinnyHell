@@ -29,6 +29,7 @@ public abstract class GameFrame extends JFrame implements Runnable, ImagesPlayer
 	// number of FPS values stored to get an average
 
 	protected int pWidth, pHeight; // panel dimensions
+	ClipsLoader clippy = new ClipsLoader("clipsInfo.txt");
 
 	private Thread animator; // the thread that performs the animation
 	protected boolean running = false; // used to stop the animation thread
@@ -204,6 +205,9 @@ public abstract class GameFrame extends JFrame implements Runnable, ImagesPlayer
 	private void gameStart()
 	// initialise and start the thread
 	{
+
+		clippy.play("bells", true);
+		clippy.setVolume("bells", -15f);
 		if (animator == null || !running) {
 			animator = new Thread(this);
 			animator.start();

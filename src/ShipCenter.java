@@ -51,6 +51,7 @@ import java.util.ArrayList;
 
 public class ShipCenter extends GameFrame implements KeyListener {
 
+
 	private static final long serialVersionUID = -2450477630768116721L;
 
 	private static int DEFAULT_FPS = 60;
@@ -106,6 +107,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
 
 	@Override
 	protected void simpleInitialize() {
+
 		// create game components
         inputs = new boolean[256];
         for(int x  = 0; x < inputs.length; x++)
