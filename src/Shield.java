@@ -10,7 +10,7 @@ public class Shield {
     ImageSFXs imgSfx;
     BufferedImage shieldImg;
     BufferedImage drawIm;
-    int maxRotate = 5;
+    int maxRotate = 2;
     Random randy;
     int frameX;
     int frameY;

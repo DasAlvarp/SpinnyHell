@@ -46,7 +46,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     private double forwardVelocity = 0;
     private double sideVelocity = 0;
 
-    private int maxRotate = 3;
+    private int maxRotate = 1;
     private Rectangle collideRect;
 
     private ImagesLoader imgLoader;
@@ -75,12 +75,12 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         hitbox = new Polygon(new int[]{pos.getX() + hitX / 2, pos.getX() + hitX / 2,pos.getX() - hitX / 2,pos.getX() - hitX / 2}, new int[]{pos.getY() + hitY / 2, pos.getY() + hitX / 2,pos.getY() - hitX / 2,pos.getY() - hitY / 2},4);
 
         shield = new Shield(pos, frameX, frameY, cont);
-        clippy.setVolume(songNames[0], -20.0f);
+        clippy.setVolume(songNames[0], -30.0f);
 
-        for(int x = 2; x < 4; x++)
-        {
-            clippy.setVolume(songNames[x], -20.0f);
-        }
+
+        clippy.setVolume(songNames[2], -30.0f);
+        clippy.setVolume(songNames[3], -20f);
+
 
     }
 
@@ -327,18 +327,22 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         if(pos.getRotationVelocity() > maxRotate)
         {
             pos.setRotationVelocity(maxRotate);
+            shield.pos.rotationVelocity = 2.75 * pos.getRotationVelocity();
         }
         else if (pos.getRotationVelocity() < -1 * maxRotate)
         {
             pos.setRotationVelocity(-1 * maxRotate);
+            shield.pos.rotationVelocity = 2.75 * pos.getRotationVelocity();
         }
         else if(pos.getRotationVelocity() > 0)
         {
             pos.setRotationVelocity(pos.getRotationVelocity() - randy.nextInt(2));
+            shield.pos.rotationVelocity = 2.75 * pos.getRotationVelocity();
         }
         else if(pos.getRotationVelocity() < 0)
         {
             pos.setRotationVelocity(pos.getRotationVelocity() + randy.nextInt(2));
+            shield.pos.rotationVelocity = 2.75 * pos.getRotationVelocity();
         }
 
         //updating side velocity
