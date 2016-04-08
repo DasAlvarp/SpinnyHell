@@ -87,7 +87,9 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         overlap.intersect(new Area(otherShip.getShield().getHitbox()));
         if(!overlap.isEmpty())
         {
-            System.out.println("hi");
+            double vel = getShield().pos.getRotationVelocity();
+            getShield().pos.setRotationVelocity(2 * otherShip.getShield().pos.getRotationVelocity());
+            otherShip.getShield().pos.setRotationVelocity(2 * vel);
         }
     }
 
