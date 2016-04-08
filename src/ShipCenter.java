@@ -164,8 +164,8 @@ public class ShipCenter extends GameFrame implements KeyListener {
 	    gScr.setFont(font);
 
 	    // report frame count & average FPS and UPS at top left
-		gScr.drawString("x" + MouseInfo.getPointerInfo().getLocation().getX() + "; y " + MouseInfo.getPointerInfo().getLocation().getY() + " ms" + df.format(averageFPS) + ", " +
-	                                df.format(averageUPS), 20, 25);  // was (10,55)
+		//gScr.drawString("x" + MouseInfo.getPointerInfo().getLocation().getX() + "; y " + MouseInfo.getPointerInfo().getLocation().getY() + " ms" + df.format(averageFPS) + ", " +
+	    //                            df.format(averageUPS), 20, 25);  // was (10,55)
 		
 
 		// report time used and boxes used at bottom left
