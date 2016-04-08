@@ -91,6 +91,12 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             double vel = getShield().pos.getRotationVelocity();
             getShield().pos.setRotationVelocity(2 * otherShip.getShield().pos.getRotationVelocity());
             otherShip.getShield().pos.setRotationVelocity(2 * vel);
+
+
+            sideVelocity += 2 * getXvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation(), pos.getOrientation());
+            forwardVelocity += 2 * getYvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation(), pos.getOrientation());
+            otherShip.forwardVelocity -= 2 * getYvelocity(forwardVelocity, sideVelocity, pos.getOrientation(), pos.getOrientation());
+            otherShip.sideVelocity -= 2 * getXvelocity(forwardVelocity, sideVelocity, pos.getOrientation(), pos.getOrientation());
         }
 
         overlap = new Area(getUpdatedHitbox());
@@ -98,24 +104,24 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         if(!overlap.isEmpty())
         {
             System.out.println("hi");
-            pos.x += 2 * getXvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation());
-            pos.y -= 2 * getYvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation());
-            otherShip.pos.y -= 2 * getYvelocity(forwardVelocity, sideVelocity, pos.getOrientation());
-            otherShip.pos.x += 2 * getXvelocity(forwardVelocity, sideVelocity, pos.getOrientation());
+            sideVelocity += 2 * getXvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation(), pos.getOrientation());
+            forwardVelocity += 2 * getYvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation(), pos.getOrientation());
+            otherShip.forwardVelocity -= 2 * getYvelocity(forwardVelocity, sideVelocity, pos.getOrientation(), otherShip.pos.getOrientation());
+            otherShip.sideVelocity -= 2 * getXvelocity(forwardVelocity, sideVelocity, pos.getOrientation(), otherShip.pos.getOrientation());
         }
     }
 
 
-    public double getXvelocity(double forwardVelocity, double sideVelocity, double thisAngle)
+    public double getXvelocity(double forwardVelocity, double sideVelocity, double thisAngle, double otherAngle)
     {
-        double xv = Math.sin(Math.toRadians(thisAngle)) * forwardVelocity;
+        double xv = Math.sin(Math.toRadians(thisAngle - otherAngle)) * forwardVelocity;
          //xv += Math.sin(Math.toRadians(thisAngle + 90)) * sideVelocity;
         return xv;
     }
 
-    public double getYvelocity(double forwardVelocity, double sideVelocity, double thisAngle)
+    public double getYvelocity(double forwardVelocity, double sideVelocity, double thisAngle, double otherAngle)
     {
-        double yv = Math.cos(Math.toRadians(thisAngle)) * forwardVelocity;
+        double yv = Math.cos(Math.toRadians(thisAngle + 90 - otherAngle)) * forwardVelocity;
        // yv += Math.cos(Math.toRadians(thisAngle + 90)) * sideVelocity;
         return yv;
     }
