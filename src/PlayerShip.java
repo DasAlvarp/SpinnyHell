@@ -321,7 +321,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             }
         }
 
-        shield.setImg((50 - hp/10)%5);
+        shield.setImg((50 - hp) / 10);
 
         //updating rotational velocity
         if(pos.getRotationVelocity() > maxRotate)
