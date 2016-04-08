@@ -258,6 +258,12 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             g.setColor(Color.red);
             g.fillRect(frameX - 20 - (3 * boost), frameY - 60, 3 * boost, 50);
         }
+
+        Font curF = g.getFont();
+        g.setFont(new Font("Courier", Font.CENTER_BASELINE, 12));
+        g.setColor(Color.white);
+        g.drawString("PLAYER " + (player + 1), pos.getX() - 25, pos.getY() - 51);
+        g.setFont(curF);
         //g.fillPolygon(getUpdatedHitbox());
         //g.fillPolygon(shield.getHitbox());
     }
