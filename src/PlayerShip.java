@@ -3,6 +3,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -18,12 +19,11 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     private Position pos;//position data of ship
     private KeysList ks = new KeysList();
     private int dimsX = 45, dimsY = 45;
+    private int hitX = 16, hitY = 42;
     private int points = 0;
     private int hp = 5;
 
     private ClipsLoader clippy = new ClipsLoader("clipsInfo.txt");
-
-
 
     private BufferedImage shipImg;
     private BufferedImage drawIm;
@@ -39,10 +39,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     private Shield shield;
     private Color theGray = new Color(127, 127, 127);
 
-
     private Random randy = new Random();
-
-
 
     private double forwardVelocity = 0;
     private double sideVelocity = 0;
@@ -52,6 +49,8 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
     private ImagesLoader imgLoader;
     private ImageSFXs imgSfx;
+
+    private Polygon hitbox;
 
     private String[] songNames = {"engine", "rotate", "side", "sound1"};
 
@@ -69,6 +68,8 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         right = imgLoader.getImage("blank");
         flame = imgLoader.getImage("blank");
         drawIm = shipImg;
+
+        hitbox = new Polygon(new int[]{pos.getX() + hitX / 2, pos.getX() + hitX / 2,pos.getX() - hitX / 2,pos.getX() - hitX / 2}, new int[]{pos.getY() + hitY / 2, pos.getY() + hitX / 2,pos.getY() - hitX / 2,pos.getY() - hitY / 2},4);
 
         shield = new Shield(pos, frameX, frameY, cont);
         clippy.setVolume(songNames[0], -20.0f);
@@ -91,6 +92,32 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             getShield().pos.setRotationVelocity(2 * otherShip.getShield().pos.getRotationVelocity());
             otherShip.getShield().pos.setRotationVelocity(2 * vel);
         }
+
+        overlap = new Area(getUpdatedHitbox());
+        overlap.intersect(new Area(otherShip.getUpdatedHitbox()));
+        if(!overlap.isEmpty())
+        {
+            System.out.println("hi");
+            pos.x += 2 * getXvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation());
+            pos.y -= 2 * getYvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation());
+            otherShip.pos.y -= 2 * getYvelocity(forwardVelocity, sideVelocity, pos.getOrientation());
+            otherShip.pos.x += 2 * getXvelocity(forwardVelocity, sideVelocity, pos.getOrientation());
+        }
+    }
+
+
+    public double getXvelocity(double forwardVelocity, double sideVelocity, double thisAngle)
+    {
+        double xv = Math.sin(Math.toRadians(thisAngle)) * forwardVelocity;
+         //xv += Math.sin(Math.toRadians(thisAngle + 90)) * sideVelocity;
+        return xv;
+    }
+
+    public double getYvelocity(double forwardVelocity, double sideVelocity, double thisAngle)
+    {
+        double yv = Math.cos(Math.toRadians(thisAngle)) * forwardVelocity;
+       // yv += Math.cos(Math.toRadians(thisAngle + 90)) * sideVelocity;
+        return yv;
     }
 
     public int getHp(){
@@ -155,6 +182,8 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         drawImage(g, drawIm, pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
 
         drawImage(g, imgSfx.getRotatedImage(flame, (int)pos.getOrientation()), pos.getX() - dimsX / 2, pos.getY() - dimsY / 2);
+
+        g.fillPolygon(hitbox);
 
 
         g.setColor(Color.MAGENTA);
@@ -237,6 +266,37 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
         wrapAround(pos);
         shield.update(pos);
+    }
+
+
+    public Point rotatePoint(double x, double y, Position pos, double rotation)
+    {
+        //from stackexchange
+        double x1 = x - pos.getX();
+        double y1 = y - pos.getY();
+
+//APPLY ROTATION
+        double temp_x1 = x1 * Math.cos(Math.toRadians(rotation)) - y1 * Math.sin(Math.toRadians(rotation));
+        double temp_y1 = x1 * Math.sin(Math.toRadians(rotation)) + y1 * Math.cos(Math.toRadians(rotation));
+
+//TRANSLATE BACK
+        return new Point((int)temp_x1 + pos.getX(), (int)temp_y1 + pos.getY());
+    }
+
+    public Polygon getUpdatedHitbox()
+    {
+        hitbox = new Polygon(new int[]{pos.getX() + hitX / 2, pos.getX() + hitX / 2,pos.getX() - hitX / 2,pos.getX() - hitX / 2}, new int[]{pos.getY() + hitY / 2, pos.getY() - hitY / 2,pos.getY() - hitY / 2,pos.getY() + hitY / 2},4);
+
+        Polygon out = new Polygon();
+        Point p;
+        for(int x = 0; x < 4; x++)
+        {
+            p = rotatePoint(hitbox.xpoints[x], hitbox.ypoints[x], pos, pos.getOrientation());
+            out.addPoint((int)p.getX(), (int)p.getY());
+        }
+
+        hitbox = out;
+        return out;
     }
 
     public void wrapAround(Position p)

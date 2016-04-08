@@ -121,7 +121,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
 	    gScr.setFont(font);
 
 	    // report frame count & average FPS and UPS at top left
-		gScr.drawString("Average FPS/UPS: " + df.format(averageFPS) + ", " +
+		gScr.drawString("x" + MouseInfo.getPointerInfo().getLocation().getX() + "; y " + MouseInfo.getPointerInfo().getLocation().getY() + " ms" + df.format(averageFPS) + ", " +
 	                                df.format(averageUPS), 20, 25);  // was (10,55)
 		
 
@@ -223,7 +223,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
 			fps = Integer.parseInt(args[0]);
 
 		long period = (long) 1000.0 / fps;
-		System.out.println("fps: " + fps + "; period: " + period + " ms");
+		System.out.println("x" + MouseInfo.getPointerInfo().getLocation().getX() + "; y " + MouseInfo.getPointerInfo().getLocation().getY() + " ms");
 		new ShipCenter(period * 1000000L); // ms --> nanosecs
 	} // end of main()
 
