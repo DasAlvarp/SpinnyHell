@@ -60,7 +60,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
 	private Obstacles obs; // the obstacles
     private boolean[] inputs;
 
-    private boolean playerWin;
+    private int playerWin = 0;
     private int p1win = 0;
     private int p2win = 0;
 
@@ -202,13 +202,17 @@ public class ShipCenter extends GameFrame implements KeyListener {
                 g.setFont(new Font("Monospace", Font.PLAIN, 45));
                 g.setColor(Color.black);
 
-                if(playerWin)
+                if(playerWin == 2)
                 {
                     g.drawString("PLAYER 2", 1242, 263);
                 }
-                else
+                else if( playerWin == 1)
                 {
                     g.drawString("PLAYER 1",1242, 263);
+                }
+                else
+                {
+
                 }
                 g.drawString("" + p1win, 1278, 581);
                 g.drawString("" + p2win, 1278, 690);
@@ -257,13 +261,13 @@ public class ShipCenter extends GameFrame implements KeyListener {
 		if(fred.getHp() <= 0)
 		{
 			gameOver = true;
-            playerWin = false;
+            playerWin = 1;
             p1win++;
 		}
 		if(bill.getHp() <= 0)
 		{
 			gameOver = true;
-            playerWin = true;
+            playerWin = 2;
             p2win++;
 		}
 	}
@@ -272,7 +276,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
 	protected void mousePress(int x, int y) {
         if(quitArea.contains(x,y))
         {
-            stopGame();
+            //stopGame();
         }
         else if(pauseArea.contains(x, y))
         {
