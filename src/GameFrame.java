@@ -105,6 +105,7 @@ public abstract class GameFrame extends JFrame implements Runnable, ImagesPlayer
 
 
 	private void initFullScreen() {
+
 		GraphicsEnvironment ge = GraphicsEnvironment
 				.getLocalGraphicsEnvironment();
 		gd = ge.getDefaultScreenDevice();
@@ -128,11 +129,11 @@ public abstract class GameFrame extends JFrame implements Runnable, ImagesPlayer
 
 		reportCapabilities();
 
-		pWidth = getBounds().width;
-		pHeight = getBounds().height;
 
 		setBufferStrategy();
-	} // end of initFullScreen()
+
+
+    } // end of initFullScreen()
 
 	private void reportCapabilities() {
 		GraphicsConfiguration gc = gd.getDefaultConfiguration();

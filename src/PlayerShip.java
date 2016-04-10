@@ -13,7 +13,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     private final int MAX_SIDE_VELOCITY = 4;
     private int mavForward = 7;
 
-    private int frameX, frameY;//screen dimensions
+    private int frameX = 1920, frameY = 1080;//screen dimensions
     private Position pos;//position data of ship
     private KeysList ks = new KeysList();
     private int dimsX = 45, dimsY = 45;
@@ -255,47 +255,46 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         g.setColor(Color.white);
         if(player == 0)//boost bar management
         {
-            g.fillRect(20/(frameX / 1920), (frameY - 60)/(frameY / 1080), 300, 50);//white rectangle
+            g.fillRect((int)(20/((double)(frameX / 1920))), (int)((frameY - 60)/(double)(frameY / 1080)), 300, 50);//white rectangle
             g.setColor(Color.red);
-            g.fillRect(20/(frameX / 1920), (frameY - 60)/(frameY / 1080), 3 * boost, 50);//red bar
+            g.fillRect((int)(20/(double)(frameX / 1920)), (int)((frameY - 60)/(double)(frameY / 1080)), 3 * boost, 50);//red bar
             if(boost < 100) {
                 g.setColor(Color.black);
-                g.drawString("B O O S T", 110/(frameX / 1920), (frameY - 25)/(frameY / 1080));
+                g.drawString("B O O S T", (int)(110/(double)(frameX / 1920)), (int)((frameY - 25)/(double)(frameY / 1080)));
             }
             else
             {
                 g.setColor(Color.cyan);
-                g.fillRect(20/(frameX / 1920), (frameY - 60)/(frameY / 1080), 3 * boost, 50);//red bar
+                g.fillRect((int)(20/(double)(frameX / 1920)), (int)((frameY - 25)/(double)(frameY / 1080)), 3 * boost, 50);//red bar
             }
             if(grab > 0) {
 
                 g.setColor(new Color(Color.cyan.getRed(), Color.cyan.getBlue(), Color.cyan.getGreen(), grab ));
 
-                g.fillRect(20/(frameX / 1920), (frameY - 60)/(frameY / 1080), 3 * boost, 50);//blue boost grab
+                g.fillRect((int)(20/(double)(frameX / 1920)), (int)((frameY - 25)/(double)(frameY / 1080)), 3 * boost, 50);//blue boost grab
                 grab-=5;
             }
         }
         else
         {
-            g.fillRect((frameX - 320)/(frameX / 1920),(frameY - 60)/(frameY / 1080), 300, 50);
+            g.fillRect((int)((frameX - 320)/(double)(frameX / 1920)),(int)((frameY - 60)/(double)(frameY / 1080)), 300, 50);
 
             g.setColor(Color.red);
-            g.fillRect((frameX - 20 - (3 * boost))/(frameX / 1920), (frameY - 60)/(frameY / 1080), 3 * boost, 50);//red bar
+            g.fillRect((int)((frameX - 20 - (3 * boost))/(double)(frameX / 1920)), (int)((frameY - 60)/(double)(frameY / 1080)), 3 * boost, 50);//red bar
             if(boost < 100) {
                 g.setColor(Color.black);
-                g.drawString("B O O S T", (frameX - 220)/(frameX / 1920), (frameY - 25)/(frameY / 1080));
+                g.drawString("B O O S T", (int)((frameX - 220)/(double)(frameX / 1920)), (int)((frameY - 25)/(double)(frameY / 1080)));
             }
             else
             {
                 g.setColor(Color.cyan);
-                g.fillRect((frameX - 20 - (3 * boost))/(frameX / 1920), (frameY - 60)/(frameY / 1080), 3 * boost, 50);//red bar
-
             }
             if(grab > 0) {
                 g.setColor(new Color(Color.cyan.getRed(), Color.cyan.getBlue(), Color.cyan.getGreen(), grab ));
-                g.fillRect((frameX - 20 - (3 * boost))/(frameX / 1920), (frameY - 60)/(frameY / 1080), 3 * boost, 50);//blue boost grab bar
                 grab-=5;
             }
+            g.fillRect((int)((frameX - 20 - (3 * boost))/(double)(frameX / 1920)), (int)((frameY - 60)/(double)(frameY / 1080)), 3 * boost, 50);//red bar
+
         }
 
         Font curF = g.getFont();

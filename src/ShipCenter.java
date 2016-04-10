@@ -106,7 +106,11 @@ public class ShipCenter extends GameFrame implements KeyListener {
 
 	@Override
 	protected void simpleInitialize() {
+        pWidth = getBounds().width;
+        pHeight = getBounds().height;
 
+
+        System.out.println(pWidth + " D A N  K  " + pHeight);
 		// create game components
         inputs = new boolean[256];
         for(int x  = 0; x < inputs.length; x++)
@@ -205,18 +209,18 @@ public class ShipCenter extends GameFrame implements KeyListener {
 
                 if(playerWin == 2)
                 {
-                    g.drawString("PLAYER 2", 1242 / (pWidth / 1920), 263 / (pHeight / 1080));
+                    g.drawString("PLAYER 2", (int)(1242 / (double)(pWidth / 1920)), (int)(263 / (double)(pHeight / 1080)));
                 }
                 else if( playerWin == 1)
                 {
-                    g.drawString("PLAYER 1",1242 / (pWidth / 1920), 263/ (pHeight / 1080));
+                    g.drawString("PLAYER 1",(int)(1242 / (double)(pWidth / 1920)), (int)(263/ (double)(pHeight / 1080)));
                 }
                 else
                 {
 
                 }
-                g.drawString("" + p1win, 1278 / (pWidth / 1920), 581 / (pHeight / 1080));
-                g.drawString("" + p2win, 1278 / (pWidth / 1920), 685 / (pHeight / 1080));
+                g.drawString("" + p1win, (int)(1278 / (double)(pWidth / 1920)), (int)(581 / (double)(pHeight / 1080)));
+                g.drawString("" + p2win, (int)(1278 / (double)(pWidth / 1920)), (int)(685 / (double)(pHeight / 1080)));
 
 
 
