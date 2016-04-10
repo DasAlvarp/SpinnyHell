@@ -6,12 +6,12 @@ import java.util.Random;
  * Created by alvarpq on 2/17/2016.
  */
 public class Obstacles {
-    int maxNum;
-    int frameX, frameY;
-    Random randy;
+    private int maxNum;
+    private int frameX, frameY;
+    private Random randy;
 
-    ArrayList<Obstacle> pickup = new ArrayList<>();
-    ArrayList<Star> stars = new ArrayList<>();
+    private ArrayList<Obstacle> pickup = new ArrayList<>();
+    private ArrayList<Star> stars = new ArrayList<>();
 
     public Obstacles(int num, int width, int height)//creates all obstacles
     {
@@ -25,7 +25,7 @@ public class Obstacles {
         }
     }
 
-
+    //called every update, gets all the inputs from keyboard
     public synchronized void update(boolean[] inputs)//updates obstacles. If there aren't enough, there's a chance to make more
     {
 

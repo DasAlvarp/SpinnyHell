@@ -143,11 +143,11 @@ public class ShipCenter extends GameFrame implements KeyListener {
 
         if (isOverPauseButton)
         {
-            menuState = true;
+            menuState = true;//game is paused on start because that's secretly the main menu.
         }
         else if(isOverQuitButton)
         {
-            menuState = false;
+            menuState = false;//"quit" button doesn't quit, it's just settings
         }
 
 	}
@@ -195,7 +195,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
         {
             if(menuState)
             {
-                drawImage(g, play, 0,0);
+                g.drawImage(play, 0,0, pWidth, pHeight, null);
 
 
 
@@ -205,18 +205,18 @@ public class ShipCenter extends GameFrame implements KeyListener {
 
                 if(playerWin == 2)
                 {
-                    g.drawString("PLAYER 2", 1242, 263);
+                    g.drawString("PLAYER 2", 1242 / (pWidth / 1920), 263 / (pHeight / 1080));
                 }
                 else if( playerWin == 1)
                 {
-                    g.drawString("PLAYER 1",1242, 263);
+                    g.drawString("PLAYER 1",1242 / (pWidth / 1920), 263/ (pHeight / 1080));
                 }
                 else
                 {
 
                 }
-                g.drawString("" + p1win, 1278, 581);
-                g.drawString("" + p2win, 1278, 685);
+                g.drawString("" + p1win, 1278 / (pWidth / 1920), 581 / (pHeight / 1080));
+                g.drawString("" + p2win, 1278 / (pWidth / 1920), 685 / (pHeight / 1080));
 
 
 
@@ -224,7 +224,7 @@ public class ShipCenter extends GameFrame implements KeyListener {
             }
             else
             {
-                drawImage(g, control, 0, 0);
+                g.drawImage(control, 0, 0, pWidth, pHeight, null);
             }
 
 

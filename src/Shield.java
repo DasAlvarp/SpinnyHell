@@ -36,7 +36,7 @@ public class Shield {
         theBlueThing = getPixelAt(frameX / 2, frameY / 2 -35 );
     }
 
-
+//updates position based on keys
     public void updatePos(int keyDown)
     {
         if(keys.getShieldRight(player) == keyDown)
@@ -49,6 +49,7 @@ public class Shield {
         }
     }
 
+//edits pos
     public void update(Position shipPos)//updates sheld's position and rotational details
     {
 

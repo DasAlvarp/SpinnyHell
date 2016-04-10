@@ -4,7 +4,7 @@ import java.awt.*;
  * Created by alvarpq on 2/17/2016.
  *
  */
-public class Star {
+public class Star {//used to make background sexy.
     Position pos;//position data of obstacle
 
     int height = 1;
@@ -15,7 +15,7 @@ public class Star {
         rect = new Rectangle(pos.getX(), pos.getY(), width, height);
     }
 
-    //draws the ghing.
+    //draws the thing.
     public void draw(Graphics g)
     {
         g.setColor(Color.white);

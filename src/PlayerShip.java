@@ -1,9 +1,7 @@
 import java.awt.*;
 import java.awt.geom.Area;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -46,7 +44,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
     private double forwardVelocity = 0;
     private double sideVelocity = 0;
 
-    private int maxRotate = 1;
+    private int maxRotate = 1;//max rotational velocity
     private Rectangle collideRect;
 
     private ImagesLoader imgLoader;
@@ -80,17 +78,15 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
         clippy.setVolume(songNames[2], -30.0f);
         clippy.setVolume(songNames[3], -20f);
-
-
     }
 
-
+    //Checks overlap of ships, and makes proper updates
     public void checkOverlap(PlayerShip otherShip)
     {
 
         Polygon sh1 = shield.getHitbox();
         Polygon sh2 = otherShip.shield.getHitbox();
-        if(overlaps(sh1, sh2))
+        if(overlaps(sh1, sh2))//ship and ship. Pure physics (these should have been in more methods)
         {
             double vel = getShield().pos.getRotationVelocity();
             getShield().pos.setRotationVelocity(2 * otherShip.getShield().pos.getRotationVelocity());
@@ -109,6 +105,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         Polygon shi1 = getUpdatedHitbox();
         Polygon shi2 = otherShip.getUpdatedHitbox();
 
+        //overlap of shields (change in rotation and position)
         if(overlaps(shi1, shi2))
         {
             double sv = 2 * getXvelocity(otherShip.forwardVelocity, otherShip.sideVelocity, otherShip.pos.getOrientation(), pos.getOrientation());
@@ -122,6 +119,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         }
 
 
+        //checking for intersect of ship and shield, damage and physics
         if(overlaps(shi1, sh2))
         {
             hp -= 1;
@@ -135,6 +133,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
             sideVelocity += sv;
         }
 
+        //checking for intersect of ship and shield, damage and physics
         if(overlaps(shi2, sh1))
         {
 
@@ -152,6 +151,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
 
     }
 
+    //checks if two polygons overlap each other
     public boolean overlaps(Polygon a, Polygon b)
     {
         Area overlap = new Area(a);
@@ -160,7 +160,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         return !overlap.isEmpty();
     }
 
-
+//gets velocity b/t angles. Ended up not emplimenting sideways velicities, so some interactions are wonky, but it looks decent most of the time. Same for getYvelocity
     public double getXvelocity(double forwardVelocity, double sideVelocity, double thisAngle, double otherAngle)
     {
         return Math.sin(Math.toRadians(thisAngle - otherAngle)) * forwardVelocity;
@@ -185,7 +185,7 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         return points;
     }
     //returns color of pixel on ship image at specific coordinates on the whole screen
-    public Color getPixelAt(int x, int y)
+    public Color getPixelAt(int x, int y)//returns color of pixel. I should get rid of this at some point.
     {
         BufferedImage drawIm = imgSfx.getRotatedImage(shipImg, (int)pos.getOrientation());
         int imgLeft = pos.getX() - dimsX / 2;
@@ -255,45 +255,45 @@ public class PlayerShip implements ImagesPlayerWatcher, ImageObserver {
         g.setColor(Color.white);
         if(player == 0)//boost bar management
         {
-            g.fillRect(20,frameY - 60, 300, 50);//white rectangle
+            g.fillRect(20/(frameX / 1920), (frameY - 60)/(frameY / 1080), 300, 50);//white rectangle
             g.setColor(Color.red);
-            g.fillRect(20, frameY - 60, 3 * boost, 50);//red bar
+            g.fillRect(20/(frameX / 1920), (frameY - 60)/(frameY / 1080), 3 * boost, 50);//red bar
             if(boost < 100) {
                 g.setColor(Color.black);
-                g.drawString("B O O S T", 110, frameY - 25);
+                g.drawString("B O O S T", 110/(frameX / 1920), (frameY - 25)/(frameY / 1080));
             }
             else
             {
                 g.setColor(Color.cyan);
-                g.fillRect(20, frameY - 60, 3 * boost, 50);//red bar
+                g.fillRect(20/(frameX / 1920), (frameY - 60)/(frameY / 1080), 3 * boost, 50);//red bar
             }
             if(grab > 0) {
 
                 g.setColor(new Color(Color.cyan.getRed(), Color.cyan.getBlue(), Color.cyan.getGreen(), grab ));
 
-                g.fillRect(20, frameY - 60, 3 * boost, 50);//red bar
+                g.fillRect(20/(frameX / 1920), (frameY - 60)/(frameY / 1080), 3 * boost, 50);//blue boost grab
                 grab-=5;
             }
         }
         else
         {
-            g.fillRect(frameX - 320,frameY - 60, 300, 50);
+            g.fillRect((frameX - 320)/(frameX / 1920),(frameY - 60)/(frameY / 1080), 300, 50);
 
             g.setColor(Color.red);
-            g.fillRect(frameX - 20 - (3 * boost), frameY - 60, 3 * boost, 50);//red bar
+            g.fillRect((frameX - 20 - (3 * boost))/(frameX / 1920), (frameY - 60)/(frameY / 1080), 3 * boost, 50);//red bar
             if(boost < 100) {
                 g.setColor(Color.black);
-                g.drawString("B O O S T", frameX - 220, frameY - 25);
+                g.drawString("B O O S T", (frameX - 220)/(frameX / 1920), (frameY - 25)/(frameY / 1080));
             }
             else
             {
                 g.setColor(Color.cyan);
-                g.fillRect(frameX - 20 - (3 * boost), frameY - 60, 3 * boost, 50);//red bar
+                g.fillRect((frameX - 20 - (3 * boost))/(frameX / 1920), (frameY - 60)/(frameY / 1080), 3 * boost, 50);//red bar
 
             }
             if(grab > 0) {
                 g.setColor(new Color(Color.cyan.getRed(), Color.cyan.getBlue(), Color.cyan.getGreen(), grab ));
-                g.fillRect(20, frameY - 60, 3 * boost, 50);//red bar
+                g.fillRect((frameX - 20 - (3 * boost))/(frameX / 1920), (frameY - 60)/(frameY / 1080), 3 * boost, 50);//blue boost grab bar
                 grab-=5;
             }
         }
